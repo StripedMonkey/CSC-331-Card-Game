@@ -24,7 +24,6 @@ public class Player {
 
     /**
      * Will alter mana.
-     * We could track hand indices here.
      * @param handIndex : Represents the index value of hand loc.
      */
     public boolean buyCard(int handIndex) {
