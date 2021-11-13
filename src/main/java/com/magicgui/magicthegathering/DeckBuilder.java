@@ -33,7 +33,7 @@ public class DeckBuilder {
         List<Effect> effects = new ArrayList<>();
         String imagePath = "card.jpg";
 
-        return new Card(attack, health, cost, effects, "Beautiful default description", imagePath);
+        return new Card(attack, health, cost, effects, "Beautiful default description", imagePath,false);
 
     }
 
