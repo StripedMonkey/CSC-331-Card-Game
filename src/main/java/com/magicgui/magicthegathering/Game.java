@@ -48,7 +48,9 @@ public class Game {
             currentTurn += 1;
             onEndTurn();
         }
-
     }
+
+    public Player getPlayer() { return player; }
+    public Player getComputer() { return computer; }
 
 }

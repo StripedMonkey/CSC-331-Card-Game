@@ -83,9 +83,6 @@ public class Player{
             support.firePropertyChange("HandEvent", toRemove, handIndex);
             System.out.println(this.getPlayField());
             System.out.println("Printing playfield | Backend.");
-            for (Card c: this.getPlayField()){
-                System.out.printf("%s ", c.getDescription());
-            }
         }
         if (cardType.equals(drawType.CANT_AFFORD)){
             //can't afford
@@ -104,7 +101,7 @@ public class Player{
     public Card getPlayFieldCard(int index){ return playField[index]; } //Shouldn't be used
     public Card[] getPlayField(){ return playField; }
     public int getMaxMana() {return this.maxMana;}
-    public int getMaxHealth() {return baseHealth;}
+    public int getBaseHealth() { return baseHealth; }
     public boolean isDead() {return this.health < 0;}
 
     public void incMaxMana(){
