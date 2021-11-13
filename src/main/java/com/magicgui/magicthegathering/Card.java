@@ -18,18 +18,20 @@ public class Card {
     private int health = baseHealth;
     private int cost;
 
-    Card(int attack, int health, int cost, List<Effect> effects, String description, String imagePath) {
+
+    Card(int attack, int health, int cost, List<Effect> effects, String description, String imagePath,boolean isSpellCard) {
         this.attack = attack;
         this.baseHealth = health;
         this.cost = cost;
         this.effects = effects;
         this.description = description;
         this.imagePath = imagePath;
+        this.isSpellCard = isSpellCard;
         eventHelper = new PropertyChangeSupport(this);
     }
 
     static List<Card> buildDeckFromFolder(File folder) {
-        return null;
+        return DeckBuilder.buildDeck(52);
     }
 
     static List<Card> buildDeckFromFolder(String folder) {
@@ -130,6 +132,7 @@ public class Card {
         for (Effect effect : effects) {
             effect.endTurn(this);
         }
+        setHealth(getBaseHealth());
     }
 
     public void damage(int damage) {

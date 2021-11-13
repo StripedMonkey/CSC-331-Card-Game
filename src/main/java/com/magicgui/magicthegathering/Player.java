@@ -10,8 +10,9 @@ import java.util.Stack;
 
 public class Player{
     private PropertyChangeSupport support;
-    private static final int baseHealth = 10;
+    private static final int baseHealth = 20;
     private int health = baseHealth;
+    private int maxMana = 3;
     private int mana = 3;
     private Stack<Card> deck = new Stack<>();
     private List<Card> hand = new ArrayList<>();
@@ -60,11 +61,8 @@ public class Player{
                 return drawType.PLACE;
             }
         }
-        else if (this.mana < hand.get(handIndex).getCost()){
-            return drawType.CANT_AFFORD;
-        }
         else {
-            return drawType.OCCUPIED;
+            return drawType.CANT_AFFORD;
         }
     }
 
@@ -83,9 +81,6 @@ public class Player{
         if (cardType.equals(drawType.CANT_AFFORD)){
             //can't afford
         }
-        if (cardType.equals(drawType.OCCUPIED)){
-            // (invoke ui decision)checkFieldOverride => playField[index] = card; else
-        }
     }
 
     public void drawCard() {  hand.add(deck.pop()); }
@@ -93,23 +88,29 @@ public class Player{
 
     public Card getPlayFieldCard(int index){ return playField[index]; } //Shouldn't be used
     public Card[] getPlayField(){ return playField; }
+    public int getMaxMana() {return this.maxMana;}
+    public int getMaxHealth() {return baseHealth;}
     public boolean isDead() {return this.health < 0;}
 
+    public void incMaxMana(){
+        this.maxMana += 4;
+    }
+
     public void addMana() {
-        int initiaMana = this.mana;
+        int initialMana = this.mana;
         this.mana+=3;
-        support.firePropertyChange("Mana Change", initiaMana, this.mana);
+        support.firePropertyChange("ManaEvent", initialMana, this.mana);
     }
     public void damageHealth(int damage) {
         int initialHealth = this.health;
         this.health -= damage;
-        support.firePropertyChange("damageHealth", initialHealth, this.health);
+        support.firePropertyChange("DamageEvent", initialHealth, this.health);
     }
 
     public void resetHealth() {
         int initialHealth = this.health;
         this.health = baseHealth;
-        support.firePropertyChange("resetHealth", initialHealth, this.health);
+        support.firePropertyChange("HealthEvent", initialHealth, this.health);
     }
 
     public void addPropertyChangeListener(String pName, PropertyChangeListener pcl){
