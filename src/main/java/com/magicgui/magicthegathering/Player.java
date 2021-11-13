@@ -89,6 +89,7 @@ public class Player{
     public Card getPlayFieldCard(int index){ return playField[index]; } //Shouldn't be used
     public Card[] getPlayField(){ return playField; }
     public int getMaxMana() {return this.maxMana;}
+    public int getMaxHealth() {return baseHealth;}
     public boolean isDead() {return this.health < 0;}
 
     public void incMaxMana(){
@@ -96,9 +97,9 @@ public class Player{
     }
 
     public void addMana() {
-        int initiaMana = this.mana;
+        int initialMana = this.mana;
         this.mana+=3;
-        support.firePropertyChange("ManaEvent", initiaMana, this.mana);
+        support.firePropertyChange("ManaEvent", initialMana, this.mana);
     }
     public void damageHealth(int damage) {
         int initialHealth = this.health;
