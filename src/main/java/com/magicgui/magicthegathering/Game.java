@@ -1,4 +1,4 @@
-import java.util.List;
+package com.magicgui.magicthegathering;
 
 
 // Not complete...
@@ -22,7 +22,7 @@ public class Game {
         Card[] playField = player.getPlayField();
         Card[] compField = computer.getPlayField();
         for (int i = 0; i < 6; i++) {
-            //Player Attacks Computer. i.e. Update computer field.
+            //com.magicgui.magicthegathering.Player Attacks Computer. i.e. Update computer field.
             try {
                 playField[i].cast(computer, compField[i], playField[i], player);
                 // Should we apply damage that exceeds the defending card's health to enemy?

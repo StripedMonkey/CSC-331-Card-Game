@@ -1,13 +1,15 @@
-class BleedEffect extends Effect
+package com.magicgui.magicthegathering;
+
+class IncinerateEffect extends Effect
 {
     int duration;
 
-    BleedEffect(int duration) {
+    IncinerateEffect(int duration){
         this.duration = duration;
     }
     @Override
     void cast(Player targetplayer, Card targetCard, Card castingCard, Player enemyPlayer) {
-        targetCard.addEffect(new BleedEffect(2));
+        targetCard.addEffect(this);
     }
 
     @Override
@@ -20,3 +22,4 @@ class BleedEffect extends Effect
         }
     }
 }
+

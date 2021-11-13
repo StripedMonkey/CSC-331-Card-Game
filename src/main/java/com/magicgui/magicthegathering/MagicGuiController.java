@@ -82,7 +82,7 @@ public class MagicGuiController {
     @FXML
     void DeckAddCard(ActionEvent event) {
         // creates new random card
-//         Card randomCard = game.getRandomCard();
+//         com.magicgui.magicthegathering.Card randomCard = game.getRandomCard();
 //         ImageView newVisualCard = new ImageView(new Image(getClass().getResourceAsStream(newCard.getImageLink()), 100, 100, false, true));
 
         ImageView newVisualCard = new ImageView();
@@ -105,7 +105,7 @@ public class MagicGuiController {
     }
 
     public void initialize() {
-//        Game game = new Game;
+//        com.magicgui.magicthegathering.Game game = new com.magicgui.magicthegathering.Game;
 //        ObservableValue<Integer> playerHealth = game.getPlayerHealth();
 //        ObservableValue<Integer> playerMana = game.getPlayerMana();
 //        ObservableValue<Integer> CPUMana = game.getCPUMana();

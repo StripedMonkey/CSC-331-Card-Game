@@ -1,13 +1,15 @@
-class IncinerateEffect extends Effect
+package com.magicgui.magicthegathering;
+
+class PoisonEffect extends Effect
 {
     int duration;
 
-    IncinerateEffect(int duration){
+    PoisonEffect(int duration) {
         this.duration = duration;
     }
     @Override
-    void cast(Player targetplayer, Card targetCard, Card castingCard, Player enemyPlayer) {
-        targetCard.addEffect(new IncinerateEffect(4));
+    void cast(Player targetPlayer, Card targetCard, Card castingCard, Player enemyPlayer) {
+        targetCard.addEffect(this);
     }
 
     @Override
@@ -20,4 +22,3 @@ class IncinerateEffect extends Effect
         }
     }
 }
-

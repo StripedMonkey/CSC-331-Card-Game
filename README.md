@@ -1,2 +1,2 @@
-# CSC-331-Card-Game
+# CSC-331-com.magicgui.magicthegathering.Card-com.magicgui.magicthegathering.Game
 cx
