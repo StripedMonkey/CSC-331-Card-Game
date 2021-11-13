@@ -10,6 +10,9 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+# Anything in target is build related
+target/
+
 # Package Files #
 *.jar
 *.war
