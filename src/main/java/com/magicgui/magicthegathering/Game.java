@@ -6,9 +6,10 @@ package com.magicgui.magicthegathering;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class Game implements PropertyChangeListener {
+public class Game {
     private Player player;
     private Player computer;
+    private int currentTurn = 1;
 
     public Game() {
         this.player = new Player( Card.buildDeckFromFolder("Path"));
@@ -25,7 +26,6 @@ public class Game implements PropertyChangeListener {
         Card[] playField = player.getPlayField();
         Card[] compField = computer.getPlayField();
         for (int i = 0; i < 6; i++) {
-            //com.magicgui.magicthegathering.Player Attacks Computer. i.e. Update computer field.
             try {
                 // Should we apply damage that exceeds the defending card's health to enemy?
                 compField[i].damage(playField[i].getAttack());
@@ -47,15 +47,20 @@ public class Game implements PropertyChangeListener {
 
     }
     // I.e. The end of both turns.
-    public void onEneTurn(){
+    public void onEndTurn(){
         /* Reset remaining cards. */
-        player.addMana(); // +3 per round?
-        computer.addMana();
-    }
+        if (currentTurn % 2 == 0){ // even => computer turn.
+            computer.addMana();
+            computer.invokeAttack(player);
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName() == "")
+        }
+        else{
+            player.invokeAttack(computer);
+            player.addMana();
+        }
+        currentTurn += 1;
+
+
     }
 
 }

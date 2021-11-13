@@ -8,14 +8,13 @@ import java.util.Stack;
 
 // Not complete...
 
-public class Player {
+public class Player{
     private PropertyChangeSupport support;
     private static final int baseHealth = 10;
     private int health = baseHealth;
     private int mana = 3;
     private Stack<Card> deck = new Stack<>();
     private List<Card> hand = new ArrayList<>();
-    private List<Card> graveYard = new ArrayList<>();
     private Card[] playField = new Card[5];
     private enum drawType{CANT_AFFORD, SPELL, OCCUPIED, PLACE}
 
@@ -25,6 +24,22 @@ public class Player {
         //init deck
         for (Card card: cardDeck){
             deck.push(card);
+        }
+    }
+
+    public void invokeAttack(Player enemy){
+        Card[] enemyPlayField = enemy.getPlayField();
+        for (int i = 0; i < 6; i++) {
+            try {
+                enemyPlayField[i].damage(playField[i].getAttack());
+                // playField[i].endTurn();
+            } catch (NullPointerException e) {
+                if (enemyPlayField[i] == null) {
+                    enemy.damageHealth(playField[i].getAttack());
+                    // playField[i].endTurn();
+                    // else player doesn't have a card in current loc.
+                }
+            }
         }
     }
 
@@ -62,6 +77,7 @@ public class Player {
         //buyCard check will update mana.
         if (playField[fieldIndex] == null && cardType.equals(drawType.PLACE)){
             playField[fieldIndex] = hand.get(handIndex);
+            playField[fieldIndex].addPropertyChangeListener("DeadEvent", evt -> playField[fieldIndex] = null);
             hand.remove(handIndex);
         }
         if (cardType.equals(drawType.CANT_AFFORD)){
@@ -70,7 +86,6 @@ public class Player {
         if (cardType.equals(drawType.OCCUPIED)){
             // (invoke ui decision)checkFieldOverride => playField[index] = card; else
         }
-        getPlayFieldCard().cast();
     }
 
     public void drawCard() {  hand.add(deck.pop()); }
@@ -90,18 +105,20 @@ public class Player {
         this.health -= damage;
         support.firePropertyChange("damageHealth", initialHealth, this.health);
     }
+
     public void resetHealth() {
         int initialHealth = this.health;
         this.health = baseHealth;
         support.firePropertyChange("resetHealth", initialHealth, this.health);
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener pcl){
-        support.addPropertyChangeListener(pcl);
+    public void addPropertyChangeListener(String pName, PropertyChangeListener pcl){
+
+        support.addPropertyChangeListener(pName, pcl);
     }
 
-    public void removePropertyListener(PropertyChangeListener pcl){
-        support.removePropertyChangeListener(pcl);
+    public void removePropertyListener(String pName, PropertyChangeListener pcl){
+        support.removePropertyChangeListener(pName, pcl);
     }
 }
 
