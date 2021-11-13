@@ -78,8 +78,8 @@ public class Player{
             support.firePropertyChange("FieldEvent", hand.get(handIndex), fieldIndex);
             playField[fieldIndex].addPropertyChangeListener("DeadEvent", evt -> playField[fieldIndex] = null);
             Card toRemove = hand.get(handIndex);
-            support.firePropertyChange("HandEvent", toRemove, hand.indexOf(toRemove));
             hand.remove(handIndex);
+            support.firePropertyChange("HandEvent", toRemove, handIndex);
         }
         if (cardType.equals(drawType.CANT_AFFORD)){
             //can't afford
