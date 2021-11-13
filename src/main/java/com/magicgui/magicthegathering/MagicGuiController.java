@@ -3,7 +3,6 @@ package com.magicgui.magicthegathering;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.*;
 
 import javafx.event.EventHandler;
@@ -40,43 +39,39 @@ public class MagicGuiController {
 
 
 
-//    @FXML
-//    void DraggingMainItem(MouseEvent event) {
-//        Node currentCard = (Node) event.getTarget();
-//        Dragboard db = currentCard.startDragAndDrop(TransferMode.MOVE);
-//        ClipboardContent content = new ClipboardContent();
-//        content.putString(currentCard.getId());
-//        db.setDragView(((ImageView) event.getTarget()).getImage());
-//        content.putImage(((ImageView) currentCard).getImage());
-//
-//        db.setContent(content);
-//        event.consume();
-//    }
-
-
     public void initialize() {
-//        Game game = new Game;
-        
+        Game game = new Game();
+
+        ManaProgressBar.setProgress(1);
+        ManaProgressBarLabel.setText(String.format("Mana: %d / %d", game.getComputer().getMaxMana(), game.getComputer().getMaxMana()));
+        HealthProgressBar.setStyle("-fx-accent: red");
+        HealthProgressBarLabel.setText(String.format("Health: %d / %d", game.getPlayer().getBaseHealth(), game.getPlayer().getBaseHealth()));
+        HealthProgressBar.setProgress(1);
+
+        CPUManaProgressBar.setProgress(1);
+        CPUManaProgressBarLabel.setText(String.format("Mana: %d / %d", game.getComputer().getMaxMana(), game.getComputer().getMaxMana()));
+        CPUHealthProgressBar.setProgress(1);
+        CPUHealthProgressBar.setStyle("-fx-accent: red");
+        CPUHealthProgressBarLabel.setText(String.format("Health: %d / %d", game.getComputer().getBaseHealth(), game.getComputer().getBaseHealth()));
+
+
         cardPaneMap = new HashMap<String, Pane>();
-        Card newCard = new Card(10, 5, 10, null, "banana", "Creature_Travellers.png");
+        Card newCard = new Card(10, 5, 10, new ArrayList<>(), "banana", "Creature_Travellers.png", false);
+        Card newCard1 = new Card(5, 10, 3, new ArrayList<>(), ":Hey", "Creature_Crazy_Axeman.png", false);
 
 
         // Deck Button add card Event
         DeckButton.pressedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (aBoolean) {
-//                game.addCard();
-
-                StackPane newVisualCard = createCardPane(newCard);
-                newVisualCard.setId("card" + String.valueOf(cardsInGame));
-                PlayerHandGridPane.add(newVisualCard, cardsInGame % 7, 0);
-                cardsInGame++;
-            }
-        });
+            if (aBoolean){
+                game.getPlayer().drawCard();
+            }});
 
         // End turn button Event
         EndTurnButton.pressedProperty().addListener((observableValue, aBoolean, t1) -> {
-//            if (aBoolean){game.endTurn();}
-        });
+            if (aBoolean){
+                game.onEndTurn();
+            }});
+
         PlayerFieldGrid.setOnDragDropped(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
                 Dragboard db = event.getDragboard();
@@ -88,7 +83,6 @@ public class MagicGuiController {
                     int  battleFieldLocation = cIndex == null ? 0 : cIndex;
                     PlayerFieldGrid.add(cardPaneMap.get(db.getString()), battleFieldLocation, 0);
                     // not sure exactly how to find location of where card is dragged from just yet
-                    // game.passCardDragLocation(battleFieldLocation, playerHandLocation);
                     success = true;
                 }
                 event.setDropCompleted(success);
@@ -105,29 +99,36 @@ public class MagicGuiController {
         });
 
 // Listeners for player health once implemented
-//        game.getPlayer().addListener("HandEvent", (Game game, String propertyName, Object oldValue, Object newValue) -> {
-//
-//        });
 
-//        game.getComputer().addListener("HealthEvent", ( (Player Cpu, String propertyName, Object oldValue, Object newValue) -> {
-//            CPUHealthProgressBar.setProgress(newValue / Cpu.getMaxHealth());
-//            HealthProgressBarLabel.setText(String.format("Health: %f / %f", newValue, Cpu.getMaxMana);
-//        });
-//        game.getPlayer().addListener("HealthEvent", ( (Player player, String propertyName, Object oldValue, Object newValue) -> {
-//            HealthProgressBar.setProgress(newValue / player.getMaxHealth());
-//            HealthProgressBarLabel.setText(String.format("Health: %f / %f", newValue, game.getMaxMana);
-//        });
-//
-//
-//        game.getComputer().addListener("ManaEvent", ( (Player Cpu, String propertyName, Object oldValue, Object newValue) -> {
-//            ManaProgressBar.setProgress(newValue / Cpu.getMaxMana());
-//            ManaProgressBarLabel.setText(String.format("Health: %f / %f", newValue, game.getMaxMana);
-//        });
-//
-//        game.getPlayer().addListener("HealthEvent", ( (Player player, String propertyName, Object oldValue, Object newValue) -> {
-//            HealthProgressBar.setProgress(newValue / player.getMaxHealth());
-//            ManaProgressBarLabel.setText(String.format("Health: %f / %f", newValue, game.getMaxMana);
-//        });
+        game.getComputer().addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> {
+            int newHealth = (int)PropertyChangeEvent.getNewValue();
+            int baseHealth = ((Player)PropertyChangeEvent.getSource()).getBaseHealth();
+            CPUHealthProgressBar.setProgress((float)newHealth / baseHealth);
+            CPUHealthProgressBarLabel.setText(String.format("Health: %d / %d", newHealth, baseHealth));
+        });
+
+        game.getComputer().addPropertyChangeListener("ManaEvent", PropertyChangeEvent -> {
+            int maxMana = ((Player)PropertyChangeEvent.getSource()).getMaxMana();
+            int newMana = (int)PropertyChangeEvent.getNewValue();
+            CPUManaProgressBar.setProgress((float)newMana / maxMana);
+            CPUManaProgressBarLabel.setText(String.format("Mana: %d / %d", newMana, maxMana));
+        });
+
+        game.getPlayer().addPropertyChangeListener("ManaEvent", PropertyChangeEvent -> {
+            int maxMana = ((Player)PropertyChangeEvent.getSource()).getMaxMana();
+            int newMana = (int)PropertyChangeEvent.getNewValue();
+            ManaProgressBar.setProgress((float)newMana / maxMana);
+            ManaProgressBarLabel.setText(String.format("Health: %d / %d", newMana, maxMana));
+        });
+
+        game.getPlayer().addPropertyChangeListener("FieldEvent", PropertyChangeEvent -> {
+
+        });
+
+        game.getPlayer().addPropertyChangeListener("HandEvent", PropertyChangeEvent ->{
+            StackPane newVisualCard = createCardPane((Card) PropertyChangeEvent.getOldValue());
+            PlayerHandGridPane.add(newVisualCard, (Integer) PropertyChangeEvent.getNewValue(), 0);
+        });
     }
 
     private StackPane createCardPane(Card currentCard){
@@ -135,6 +136,7 @@ public class MagicGuiController {
         cardPane.setMaxHeight(180);
         cardPane.setMaxWidth(135);
         Image cardImage = new Image(getClass().getResourceAsStream(currentCard.getImagePath()), 135, 180, true, true);
+
         Label cardLabel = new Label();
         cardLabel.setText(String.valueOf(currentCard.getBaseHealth()));
         cardLabel.setTextFill(Paint.valueOf("white"));
@@ -142,27 +144,10 @@ public class MagicGuiController {
         StackPane.setAlignment(cardLabel, Pos.BOTTOM_LEFT);
 
 
-        cardPane.setId("card"+String.valueOf(cardsInGame));
-        cardPaneMap.put("card"+String.valueOf(cardsInGame), cardPane);
+        cardPane.setId(String.valueOf(currentCard));
+        cardPaneMap.put(String.valueOf(currentCard), cardPane);
         cardPane.getChildren().add(new ImageView(cardImage));
         cardPane.getChildren().add(cardLabel);
-
-
-        currentCard.addPropertyChangeListener("HealthEvent", evt -> {
-            if((Integer)evt.getNewValue() < (Integer)evt.getOldValue()){
-                Image ngifImage = new Image(getClass().getResourceAsStream("Gif.gif"), 100, 100, true, true);
-                cardPane.getChildren().add(new ImageView(ngifImage));
-                boolean not = true;
-                int no = 0;
-                while(not != false){
-                    no += 1;
-                    if(no == 10000){
-                        not = false;
-                    }
-                }
-                cardPane.getChildren().remove(ngifImage);
-            }
-        });
 
 
         cardPane.setOnDragDetected(new EventHandler<MouseEvent>() {
@@ -185,14 +170,6 @@ public class MagicGuiController {
                 PlayerCardDescriptionTextField.setText(currentCard.getDescription());
             }
         });
-
-
-
-
-//        cardPane.getChildren().add(new ImageView(new Image(currentCard.getImagePath())));
-//        cardPane.getChildren().add(new Label(String.valueOf(currentCard.getHealth())));
-
-
 
         return cardPane;
     }
