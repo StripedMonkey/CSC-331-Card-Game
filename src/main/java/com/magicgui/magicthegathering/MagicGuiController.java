@@ -3,22 +3,19 @@ package com.magicgui.magicthegathering;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import java.beans.PropertyChangeEvent;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 
 
@@ -36,7 +33,7 @@ public class MagicGuiController {
     @FXML private Label CPUHealthProgressBarLabel;
     @FXML private ProgressBar CPUManaProgressBar;
     @FXML private Label CPUManaProgressBarLabel;
-    @FXML private TextField PlayerCardDescriptionTextField;
+    @FXML private TextArea PlayerCardDescriptionTextField;
     @FXML private GridPane PlayerHandGridPane;
     private static Map<String, Pane> cardPaneMap;
 
@@ -58,27 +55,19 @@ public class MagicGuiController {
 
     public void initialize() {
 //        Game game = new Game;
-
+        
         cardPaneMap = new HashMap<String, Pane>();
+        Card newCard = new Card(10, 5, 10, null, "banana", "Travellers.png");
 
 
         // Deck Button add card Event
         DeckButton.pressedProperty().addListener((observableValue, aBoolean, t1) -> {
             if (aBoolean) {
 //                game.addCard();
-                ImageView newVisualCard = new ImageView();
-                Pane newCard = createCardPane();
 
-                // temp card visual
-//                if (cardsInGame % 2 == 0) {
-//                    newVisualCard.setImage((new Image(getClass().getResourceAsStream("Travellers.png"), 135, 180, false, true)));
-//                } else {
-//                    newVisualCard.setImage((new Image(getClass().getResourceAsStream("card.jpg"), 135, 180, false, true)));
-//                }
-//                newVisualCard.addEventHandler(MouseEvent.DRAG_DETECTED, this::DraggingMainItem);
-//                newVisualCard.addEventFilter(MouseEvent.DRAG_DETECTED, this::DraggingMainItem);
+                StackPane newVisualCard = createCardPane(newCard);
                 newVisualCard.setId("card" + String.valueOf(cardsInGame));
-                PlayerHandGridPane.add(newCard, cardsInGame % 7, 0);
+                PlayerHandGridPane.add(newVisualCard, cardsInGame % 7, 0);
                 cardsInGame++;
             }
         });
@@ -100,8 +89,6 @@ public class MagicGuiController {
                     // not sure exactly how to find location of where card is dragged from just yet
                     // game.passCardDragLocation(battleFieldLocation, playerHandLocation);
                     success = true;
-                } else {
-//            PlayerHandGridPane.add(new ImageView(db.getImage()), )
                 }
                 event.setDropCompleted(success);
                 event.consume();}
@@ -116,7 +103,7 @@ public class MagicGuiController {
                 event.consume();}
         });
 
-
+// Listeners for player health once implemented
 //        game.getPlayer().addListener("HandEvent", (Game game, String propertyName, Object oldValue, Object newValue) -> {
 //
 //        });
@@ -141,12 +128,21 @@ public class MagicGuiController {
 //            ManaProgressBarLabel.setText(String.format("Health: %f / %f", newValue, game.getMaxMana);
 //        });
     }
-    private Pane createCardPane(){
-        Pane cardPane = new Pane();
-        Image cardImage = new Image(getClass().getResourceAsStream("Travellers.png"), 135, 180, true, true);
-        Label cardLabel = new Label("Bananana");
+
+    private StackPane createCardPane(Card currentCard){
+        StackPane cardPane = new StackPane();
+        cardPane.setMaxHeight(180);
+        cardPane.setMaxWidth(135);
+        Image cardImage = new Image(getClass().getResourceAsStream(currentCard.getImagePath()), 135, 180, true, true);
+
+        Label cardLabel = new Label();
+        cardLabel.setText(String.valueOf(currentCard.getBaseHealth()));
         cardLabel.setTextFill(Paint.valueOf("white"));
-        cardPane.setId(String.valueOf("card"+String.valueOf(cardsInGame)));
+        cardLabel.setPadding(new Insets(10));
+        StackPane.setAlignment(cardLabel, Pos.BOTTOM_LEFT);
+
+
+        cardPane.setId("card"+String.valueOf(cardsInGame));
         cardPaneMap.put("card"+String.valueOf(cardsInGame), cardPane);
         cardPane.getChildren().add(new ImageView(cardImage));
         cardPane.getChildren().add(cardLabel);
@@ -165,6 +161,17 @@ public class MagicGuiController {
                 event.consume();
             }
         });
+
+        cardPane.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                PlayerCardDescriptionTextField.setText(currentCard.getDescription());
+            }
+        });
+
+
+
+
 //        cardPane.getChildren().add(new ImageView(new Image(currentCard.getImagePath())));
 //        cardPane.getChildren().add(new Label(String.valueOf(currentCard.getHealth())));
 
