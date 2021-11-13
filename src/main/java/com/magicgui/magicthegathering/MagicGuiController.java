@@ -1,10 +1,7 @@
 package com.magicgui.magicthegathering;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import java.beans.PropertyChangeEvent;
 import java.util.*;
-
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -17,7 +14,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
-
 
 public class MagicGuiController {
     int cardsInGame = 0;
@@ -133,10 +129,7 @@ public class MagicGuiController {
             StackPane newVisualCard = createCardPane((Card) PropertyChangeEvent.getOldValue());
             PlayerHandGridPane.add(newVisualCard, (Integer) PropertyChangeEvent.getNewValue(), 0);
         });
-        game.getComputer().addPropertyChangeListener("HandEvent", PropertyChangeEvent ->{
-            StackPane newVisualCard = createCardPane((Card) PropertyChangeEvent.getOldValue());
-            PlayerHandGridPane.add(newVisualCard, (Integer) PropertyChangeEvent.getNewValue(), 0);
-        });
+
     }
 
     private StackPane createCardPane(Card currentCard){
@@ -145,17 +138,24 @@ public class MagicGuiController {
         cardPane.setMaxWidth(135);
         Image cardImage = new Image(getClass().getResourceAsStream(currentCard.getImagePath()), 135, 180, true, true);
 
-        Label cardLabel = new Label();
-        cardLabel.setText(String.valueOf(currentCard.getBaseHealth()));
-        cardLabel.setTextFill(Paint.valueOf("white"));
-        cardLabel.setPadding(new Insets(10));
-        StackPane.setAlignment(cardLabel, Pos.BOTTOM_LEFT);
+        Label cardHealthLabel = new Label();
+        cardHealthLabel.setText(String.valueOf(currentCard.getBaseHealth()));
+        cardHealthLabel.setTextFill(Paint.valueOf("white"));
+        cardHealthLabel.setPadding(new Insets(10));
+        StackPane.setAlignment(cardHealthLabel, Pos.BOTTOM_LEFT);
+
+        Label cardCostLabel = new Label();
+        cardCostLabel.setText(String.valueOf(currentCard.getCost()));
+        cardCostLabel.setTextFill(Paint.valueOf("white"));
+        cardCostLabel.setPadding(new Insets(10));
+        StackPane.setAlignment(cardCostLabel, Pos.BOTTOM_RIGHT);
 
 
         cardPane.setId(String.valueOf(currentCard));
         cardPaneMap.put(String.valueOf(currentCard), cardPane);
         cardPane.getChildren().add(new ImageView(cardImage));
-        cardPane.getChildren().add(cardLabel);
+        cardPane.getChildren().add(cardHealthLabel);
+        cardPane.getChildren().add(cardCostLabel);
 
 
         cardPane.setOnDragDetected(new EventHandler<MouseEvent>() {
@@ -178,6 +178,14 @@ public class MagicGuiController {
                 PlayerCardDescriptionTextField.setText(currentCard.getDescription());
             }
         });
+
+        currentCard.addPropertyChangeListener("DeadEvent", PropertyChangeEvent -> {
+
+        });
+        currentCard.addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> {
+            cardHealthLabel.setText(String.valueOf(PropertyChangeEvent.getNewValue()));
+        });
+
 
         return cardPane;
     }
