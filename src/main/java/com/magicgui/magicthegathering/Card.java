@@ -68,10 +68,21 @@ public class Card {
         int oldHealth = this.health;
         this.health = health;
         if (health <= 0) {
-            setDead(true);
-        }
-        eventHelper.firePropertyChange("HealthEvent", oldHealth, this.health);
 
+            if (health <= 0) {
+                for (Effect effect :
+                        effects) {
+                    if (effect instanceof LastStandEffect) {
+                        removeEffect(effect);
+                        this.health = 1;
+                    }
+                }
+                if(health<=0){
+                    setDead(true);
+                }
+            }
+        }
+        eventHelper.firePropertyChange("HealthEvent",oldHealth,this.health);
     }
 
     public int getCost() {

@@ -3,6 +3,7 @@ package com.magicgui.magicthegathering;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.*;
 
 import javafx.event.EventHandler;
@@ -57,7 +58,7 @@ public class MagicGuiController {
 //        Game game = new Game;
         
         cardPaneMap = new HashMap<String, Pane>();
-        Card newCard = new Card(10, 5, 10, null, "banana", "Travellers.png");
+        Card newCard = new Card(10, 5, 10, null, "banana", "Creature_Travellers.png");
 
 
         // Deck Button add card Event
@@ -134,7 +135,6 @@ public class MagicGuiController {
         cardPane.setMaxHeight(180);
         cardPane.setMaxWidth(135);
         Image cardImage = new Image(getClass().getResourceAsStream(currentCard.getImagePath()), 135, 180, true, true);
-
         Label cardLabel = new Label();
         cardLabel.setText(String.valueOf(currentCard.getBaseHealth()));
         cardLabel.setTextFill(Paint.valueOf("white"));
@@ -146,6 +146,23 @@ public class MagicGuiController {
         cardPaneMap.put("card"+String.valueOf(cardsInGame), cardPane);
         cardPane.getChildren().add(new ImageView(cardImage));
         cardPane.getChildren().add(cardLabel);
+
+
+        currentCard.addPropertyChangeListener("HealthEvent", evt -> {
+            if((Integer)evt.getNewValue() < (Integer)evt.getOldValue()){
+                Image ngifImage = new Image(getClass().getResourceAsStream("Gif.gif"), 100, 100, true, true);
+                cardPane.getChildren().add(new ImageView(ngifImage));
+                boolean not = true;
+                int no = 0;
+                while(not != false){
+                    no += 1;
+                    if(no == 10000){
+                        not = false;
+                    }
+                }
+                cardPane.getChildren().remove(ngifImage);
+            }
+        });
 
 
         cardPane.setOnDragDetected(new EventHandler<MouseEvent>() {
