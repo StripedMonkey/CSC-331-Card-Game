@@ -12,6 +12,7 @@ public class Game {
     private ComputerOpponent ai;
     private int currentTurn = 1;
 
+
     public Game() {
         this.player = new Player( Card.buildDeckFromFolder("Path"));
         this.computer = new Player( Card.buildDeckFromFolder("Path"));

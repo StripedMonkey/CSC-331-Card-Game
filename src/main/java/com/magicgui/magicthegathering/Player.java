@@ -10,8 +10,9 @@ import java.util.Stack;
 
 public class Player{
     private PropertyChangeSupport support;
-    private static final int baseHealth = 10;
+    private static final int baseHealth = 20;
     private int health = baseHealth;
+    private int maxMana = 3;
     private int mana = 3;
     private Stack<Card> deck = new Stack<>();
     private List<Card> hand = new ArrayList<>();
@@ -87,7 +88,12 @@ public class Player{
 
     public Card getPlayFieldCard(int index){ return playField[index]; } //Shouldn't be used
     public Card[] getPlayField(){ return playField; }
+    public int getMaxMana() {return this.maxMana;}
     public boolean isDead() {return this.health < 0;}
+
+    public void incMaxMana(){
+        this.maxMana += 4;
+    }
 
     public void addMana() {
         int initiaMana = this.mana;
