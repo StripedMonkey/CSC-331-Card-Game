@@ -9,11 +9,13 @@ import java.beans.PropertyChangeListener;
 public class Game {
     private Player player;
     private Player computer;
+    private ComputerOpponent ai;
     private int currentTurn = 1;
 
     public Game() {
         this.player = new Player( Card.buildDeckFromFolder("Path"));
         this.computer = new Player( Card.buildDeckFromFolder("Path"));
+        this.ai = new ComputerOpponent(computer);
     }
 
     //Updates player Field and Hand.
@@ -21,45 +23,23 @@ public class Game {
         this.player.placeCard(handIndex, fieldIndex);
     }
 
-    public void invokePlayerAttack() {
 
-        Card[] playField = player.getPlayField();
-        Card[] compField = computer.getPlayField();
-        for (int i = 0; i < 6; i++) {
-            try {
-                // Should we apply damage that exceeds the defending card's health to enemy?
-                compField[i].damage(playField[i].getAttack());
-                playField[i].endTurn();
-            } catch (NullPointerException e) {
-                if (compField[i] == null) {
-                    computer.damageHealth(playField[i].getAttack());
-                    playField[i].endTurn();
-                    // else player doesn't have a card in current loc.
-                }
-            }
-        }
-    }
-
-    public void updateComputerField(){};
-
-
-    public void invokeComputerAttack(){
-
-    }
     // I.e. The end of both turns.
     public void onEndTurn(){
         /* Reset remaining cards. */
         if (currentTurn % 2 == 0){ // even => computer turn.
             computer.addMana();
             computer.invokeAttack(player);
-
+            currentTurn += 1;
         }
         else{
             player.invokeAttack(computer);
             player.addMana();
+            ai.computerDraw();
+            ai.computerPlaceCards();
+            currentTurn += 1;
+            onEndTurn();
         }
-        currentTurn += 1;
-
 
     }
 

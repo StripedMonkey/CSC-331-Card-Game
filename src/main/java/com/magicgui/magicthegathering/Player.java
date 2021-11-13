@@ -113,7 +113,6 @@ public class Player{
     }
 
     public void addPropertyChangeListener(String pName, PropertyChangeListener pcl){
-
         support.addPropertyChangeListener(pName, pcl);
     }
 
