@@ -1,19 +1,19 @@
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.util.List;
 import java.beans.PropertyChangeEvent;
 
 public class Card {
-    private boolean isSpellCard;
-    private int attack;
-    private int health;
-    private int cost;
-
     PropertyChangeSupport eventHelper;
     List<Effect> effects;
     Player ownerPlayer;
     String description;
     String imagePath;
+    private boolean isSpellCard;
+    private int attack;
+    private int health;
+    private int cost;
 
     Card(int attack, int health, int cost, List<Effect> effects, String description, String imagePath) {
         this.attack = attack;
@@ -122,6 +122,14 @@ public class Card {
 
     public void heal(int health) {
         setHealth(getHealth() + health);
+    }
+
+    public void addPropertyChangeListener(String propertyName, PropertyChangeListener pcl) {
+        eventHelper.addPropertyChangeListener(propertyName, pcl);
+    }
+
+    public void removePropertyChangeListener(String propertyName, PropertyChangeListener pcl) {
+        eventHelper.removePropertyChangeListener(propertyName, pcl);
     }
 }
 
