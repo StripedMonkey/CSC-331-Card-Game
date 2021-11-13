@@ -3,6 +3,7 @@ package com.magicgui.magicthegathering;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -15,7 +16,7 @@ public class Player{
     private int maxMana = 3;
     private int mana = 3;
     private Stack<Card> deck = new Stack<>();
-    private List<Card> hand = new ArrayList<>();
+    private List<Card> hand = new ArrayList<>(Arrays.asList(null, null, null, null, null, null, null));
     private Card[] playField = new Card[5];
     private enum drawType{CANT_AFFORD, SPELL, OCCUPIED, PLACE}
 
@@ -93,7 +94,7 @@ public class Player{
 
     public void drawCard() {
         Card toAdd = deck.pop();
-        hand.add(toAdd);
+        hand.set(hand.indexOf(null), toAdd);
         support.firePropertyChange("HandEvent", toAdd, hand.indexOf(toAdd));
     }
 
