@@ -120,9 +120,9 @@ public class Card {
         effects.add(effect);
     }
 
-    void cast(Player targetPlayer, Card targetCard, Card castingCard, Player castingPlayer) {
+    void cast(Player targetPlayer, Card targetCard, Player castingPlayer) {
         for (Effect effect : effects) {
-            effect.cast(targetPlayer, targetCard, castingCard, castingPlayer);
+            effect.cast(targetPlayer, targetCard, this, castingPlayer);
         }
     }
 
