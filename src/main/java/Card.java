@@ -12,12 +12,13 @@ public class Card {
     String imagePath;
     private boolean isSpellCard;
     private int attack;
-    private int health;
+    private int baseHealth;
+    private int health = baseHealth;
     private int cost;
 
     Card(int attack, int health, int cost, List<Effect> effects, String description, String imagePath) {
         this.attack = attack;
-        this.health = health;
+        this.baseHealth = health;
         this.cost = cost;
         this.effects = effects;
         this.description = description;
@@ -50,6 +51,8 @@ public class Card {
         this.attack = attack;
         eventHelper.firePropertyChange("AttackUpdate", oldAttack, this.attack);
     }
+
+    public int getBaseHealth() { return this.baseHealth; }
 
     public int getHealth() {
         return health;

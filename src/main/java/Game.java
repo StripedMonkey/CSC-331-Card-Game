@@ -24,13 +24,13 @@ public class Game {
         for (int i = 0; i < 6; i++) {
             //Player Attacks Computer. i.e. Update computer field.
             try {
-                // playField[i].castCard();
+                playField[i].cast(computer, compField[i], playField[i], player);
                 // Should we apply damage that exceeds the defending card's health to enemy?
-                compField[i].health -= playField[i].attack;
+                compField[i].setHealth(compField[i].getHealth() - playField[i].getAttack());
                 playField[i].endTurn();
             } catch (NullPointerException e) {
                 if (compField[i] == null) {
-                    computer.damageHealth(playField[i].attack);
+                    computer.damageHealth(playField[i].getAttack());
                     playField[i].endTurn();
                     // else player doesn't have a card in current loc.
                 }
