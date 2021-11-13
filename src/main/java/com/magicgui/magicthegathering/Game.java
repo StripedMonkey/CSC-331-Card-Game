@@ -3,7 +3,10 @@ package com.magicgui.magicthegathering;
 
 // Not complete...
 
-public class Game {
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+public class Game implements PropertyChangeListener {
     private Player player;
     private Player computer;
 
@@ -24,9 +27,8 @@ public class Game {
         for (int i = 0; i < 6; i++) {
             //com.magicgui.magicthegathering.Player Attacks Computer. i.e. Update computer field.
             try {
-                playField[i].cast(computer, compField[i], playField[i], player);
                 // Should we apply damage that exceeds the defending card's health to enemy?
-                compField[i].setHealth(compField[i].getHealth() - playField[i].getAttack());
+                compField[i].damage(playField[i].getAttack());
                 playField[i].endTurn();
             } catch (NullPointerException e) {
                 if (compField[i] == null) {
@@ -45,13 +47,15 @@ public class Game {
 
     }
     // I.e. The end of both turns.
-    public void onEndCompleteTurn(){
+    public void onEneTurn(){
         /* Reset remaining cards. */
-        player.resetField();
         player.addMana(); // +3 per round?
-
-        computer.resetField();
         computer.addMana();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName() == "")
     }
 
 }
