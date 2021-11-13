@@ -80,6 +80,11 @@ public class Player{
             Card toRemove = hand.get(handIndex);
             hand.remove(handIndex);
             support.firePropertyChange("HandEvent", toRemove, handIndex);
+            System.out.println(this.getPlayField());
+            System.out.println("Printing playfield | Backend.");
+            for (Card c: this.getPlayField()){
+                System.out.printf("%s ", c.getDescription());
+            }
         }
         if (cardType.equals(drawType.CANT_AFFORD)){
             //can't afford
