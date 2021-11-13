@@ -60,11 +60,8 @@ public class Player{
                 return drawType.PLACE;
             }
         }
-        else if (this.mana < hand.get(handIndex).getCost()){
-            return drawType.CANT_AFFORD;
-        }
         else {
-            return drawType.OCCUPIED;
+            return drawType.CANT_AFFORD;
         }
     }
 
@@ -83,9 +80,6 @@ public class Player{
         if (cardType.equals(drawType.CANT_AFFORD)){
             //can't afford
         }
-        if (cardType.equals(drawType.OCCUPIED)){
-            // (invoke ui decision)checkFieldOverride => playField[index] = card; else
-        }
     }
 
     public void drawCard() {  hand.add(deck.pop()); }
@@ -98,18 +92,18 @@ public class Player{
     public void addMana() {
         int initiaMana = this.mana;
         this.mana+=3;
-        support.firePropertyChange("Mana Change", initiaMana, this.mana);
+        support.firePropertyChange("ManaEvent", initiaMana, this.mana);
     }
     public void damageHealth(int damage) {
         int initialHealth = this.health;
         this.health -= damage;
-        support.firePropertyChange("damageHealth", initialHealth, this.health);
+        support.firePropertyChange("DamageEvent", initialHealth, this.health);
     }
 
     public void resetHealth() {
         int initialHealth = this.health;
         this.health = baseHealth;
-        support.firePropertyChange("resetHealth", initialHealth, this.health);
+        support.firePropertyChange("HealthEvent", initialHealth, this.health);
     }
 
     public void addPropertyChangeListener(String pName, PropertyChangeListener pcl){

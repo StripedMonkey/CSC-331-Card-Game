@@ -16,6 +16,7 @@ public class Game {
         this.player = new Player( Card.buildDeckFromFolder("Path"));
         this.computer = new Player( Card.buildDeckFromFolder("Path"));
         this.ai = new ComputerOpponent(computer);
+
     }
 
     //Updates player Field and Hand.
@@ -28,11 +29,17 @@ public class Game {
     public void onEndTurn(){
         /* Reset remaining cards. */
         if (currentTurn % 2 == 0){ // even => computer turn.
+            for (Card c: computer.getPlayField()){
+                c.endTurn();
+            }
             computer.addMana();
             computer.invokeAttack(player);
             currentTurn += 1;
         }
         else{
+            for (Card c: player.getPlayField()){
+                c.endTurn();
+            }
             player.invokeAttack(computer);
             player.addMana();
             ai.computerDraw();
