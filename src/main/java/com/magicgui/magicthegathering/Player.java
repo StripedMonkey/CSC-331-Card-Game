@@ -1,4 +1,4 @@
-
+package com.magicgui.magicthegathering;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +54,7 @@ public class Player {
 
     public void resetField(){
         for (Card c: playField){
-            c.health = c.baseHealth;
+            //c.health = c.baseHealth;
         }
     }
 

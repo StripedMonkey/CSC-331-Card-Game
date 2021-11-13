@@ -1,8 +1,9 @@
+package com.magicgui.magicthegathering;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.util.List;
-import java.beans.PropertyChangeEvent;
 
 public class Card {
     PropertyChangeSupport eventHelper;

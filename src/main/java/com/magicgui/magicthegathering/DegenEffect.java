@@ -1,13 +1,15 @@
-class AcidEffect extends Effect {
+package com.magicgui.magicthegathering;
+
+class DegenEffect extends Effect
+{
     int duration;
 
-    AcidEffect(int duration) {
-        this.duration = duration;
+    DegenEffect(int duration) {
+    this.duration = duration;
     }
-
     @Override
-    void cast(Player targetplayer, Card targetCard, Card castingCard, Player enemyPlayer) {
-        targetCard.addEffect(new AcidEffect(3));
+    void cast(Player targetPlayer, Card targetCard, Card castingCard, Player enemyPlayer) {
+        targetCard.addEffect(this);
     }
 
     @Override

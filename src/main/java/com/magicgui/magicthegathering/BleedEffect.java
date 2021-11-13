@@ -1,13 +1,15 @@
-class DegenEffect extends Effect
+package com.magicgui.magicthegathering;
+
+class BleedEffect extends Effect
 {
     int duration;
 
-    DegenEffect(int duration) {
-    this.duration = duration;
+    BleedEffect(int duration) {
+        this.duration = duration;
     }
     @Override
-    void cast(Player targetplayer, Card targetCard, Card castingCard, Player enemyPlayer) {
-        targetCard.addEffect(new DegenEffect(3));
+    void cast(Player targetPlayer, Card targetCard, Card castingCard, Player enemyPlayer) {
+        targetCard.addEffect(this);
     }
 
     @Override
