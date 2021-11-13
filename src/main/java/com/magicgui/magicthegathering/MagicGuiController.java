@@ -72,6 +72,7 @@ public class MagicGuiController {
                 game.onEndTurn();
             }});
 
+
         PlayerFieldGrid.setOnDragDropped(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
                 Dragboard db = event.getDragboard();
@@ -79,12 +80,16 @@ public class MagicGuiController {
                 ImageView currentSpace = (ImageView) event.getPickResult().getIntersectedNode();
 
                 if (db.hasString()) {
-                    Integer cIndex = GridPane.getColumnIndex(currentSpace);
-                    int  battleFieldLocation = cIndex == null ? 0 : cIndex;
-                    PlayerFieldGrid.add(cardPaneMap.get(db.getString()), battleFieldLocation, 0);
-                    // not sure exactly how to find location of where card is dragged from just yet
+                    Integer cHandIndex = GridPane.getColumnIndex(cardPaneMap.get(db.getString()));
+                    Integer cFieldIndex = GridPane.getColumnIndex(currentSpace);
+                    int  fieldLocation = cFieldIndex == null ? 0 : cFieldIndex;
+                    int handLocation = cHandIndex == null ? 0 : cHandIndex;
+                    System.out.println(handLocation);
+                    game.updatePlayerField(handLocation, fieldLocation);
+                    PlayerFieldGrid.add(cardPaneMap.get(db.getString()), fieldLocation, 0);
                     success = true;
                 }
+
                 event.setDropCompleted(success);
                 event.consume();}
         });
@@ -99,7 +104,6 @@ public class MagicGuiController {
         });
 
 // Listeners for player health once implemented
-
         game.getComputer().addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> {
             int newHealth = (int)PropertyChangeEvent.getNewValue();
             int baseHealth = ((Player)PropertyChangeEvent.getSource()).getBaseHealth();
@@ -126,6 +130,10 @@ public class MagicGuiController {
         });
 
         game.getPlayer().addPropertyChangeListener("HandEvent", PropertyChangeEvent ->{
+            StackPane newVisualCard = createCardPane((Card) PropertyChangeEvent.getOldValue());
+            PlayerHandGridPane.add(newVisualCard, (Integer) PropertyChangeEvent.getNewValue(), 0);
+        });
+        game.getComputer().addPropertyChangeListener("HandEvent", PropertyChangeEvent ->{
             StackPane newVisualCard = createCardPane((Card) PropertyChangeEvent.getOldValue());
             PlayerHandGridPane.add(newVisualCard, (Integer) PropertyChangeEvent.getNewValue(), 0);
         });
