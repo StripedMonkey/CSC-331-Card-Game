@@ -8,11 +8,11 @@ import java.util.Random;
 public class ComputerOpponent {
   private Player ComputerOpponent;
   private Random choice;
-
-  ComputerOpponent(Player computer) {
-
+  // Initialize the Player
+  ComputerOpponent(Player ComputerOpponent) { 
+    this.ComputerOpponent = ComputerOpponent;
   }
-
+  
   public void computerDraw() {
     ComputerOpponent.drawCard();
   }
@@ -40,7 +40,7 @@ public class ComputerOpponent {
     Card[] playField = player.getPlayField();
     Card[] compField = ComputerOpponent.getPlayField();
     for (int x = 0; x <= 5; x++) {
-      //magicgame.magicthegathering.Player Attacks Computer. i.e. Update player field.
+      //magicgame.magicthegathering. Computer attacks Player. i.e. Update player field.
       try {
         playField[x].health -= compField[x].attack;
         compField[x].endTurn();
