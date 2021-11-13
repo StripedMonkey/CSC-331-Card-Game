@@ -12,6 +12,7 @@ public class Card {
     String description;
     String imagePath;
     private boolean isSpellCard;
+    private boolean isDead;
     private int attack;
     private int baseHealth;
     private int health = baseHealth;
@@ -50,10 +51,12 @@ public class Card {
     public void setAttack(int attack) {
         int oldAttack = this.attack;
         this.attack = attack;
-        eventHelper.firePropertyChange("AttackUpdate", oldAttack, this.attack);
+        eventHelper.firePropertyChange("AttackEvent", oldAttack, this.attack);
     }
 
-    public int getBaseHealth() { return this.baseHealth; }
+    public int getBaseHealth() {
+        return this.baseHealth;
+    }
 
     public int getHealth() {
         return health;
@@ -62,7 +65,10 @@ public class Card {
     public void setHealth(int health) {
         int oldHealth = this.health;
         this.health = health;
-        eventHelper.firePropertyChange("HealthUpdate", oldHealth, this.health);
+        if (health <= 0) {
+            setDead(true);
+        }
+        eventHelper.firePropertyChange("HealthEvent", oldHealth, this.health);
 
     }
 
@@ -73,7 +79,7 @@ public class Card {
     public void setCost(int cost) {
         int oldCost = this.health;
         this.cost = cost;
-        eventHelper.firePropertyChange("CostUpdate", oldCost, this.cost);
+        eventHelper.firePropertyChange("CostEvent", oldCost, this.cost);
     }
 
     public Player getOwnerPlayer() {
@@ -82,6 +88,12 @@ public class Card {
 
     public void setOwnerPlayer(Player ownerPlayer) {
         this.ownerPlayer = ownerPlayer;
+    }
+
+    public void setDead(boolean isDead) {
+        boolean oldDead = this.isDead;
+        this.isDead = isDead;
+        eventHelper.firePropertyChange("DeadEvent", oldDead, this.isDead);
     }
 
     public String getDescription() {
@@ -108,9 +120,9 @@ public class Card {
         effects.add(effect);
     }
 
-    void cast(Player targetplayer, Card targetCard, Card castingCard, Player castingPlayer) {
+    void cast(Player targetPlayer, Card targetCard, Card castingCard, Player castingPlayer) {
         for (Effect effect : effects) {
-            effect.cast(targetplayer, targetCard, castingCard, castingPlayer);
+            effect.cast(targetPlayer, targetCard, castingCard, castingPlayer);
         }
     }
 
