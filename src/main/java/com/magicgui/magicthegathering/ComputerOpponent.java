@@ -5,16 +5,15 @@ package magicgame.magicthegathering;
 
 import java.util.Random;
 
-public class ComputerOpponent
-{
+public class ComputerOpponent {
   private Player ComputerOpponent;
   private Random choice;
-
-  ComputerOpponent(Player computer) {
-
+  // Initialize the Player
+  ComputerOpponent(Player ComputerOpponent) { 
+    this.ComputerOpponent = ComputerOpponent;
   }
-
-  public void computerDraw(){
+  
+  public void computerDraw() {
     ComputerOpponent.drawCard();
   }
 
@@ -23,8 +22,7 @@ public class ComputerOpponent
   // Starting out with 7 cards
 
   public void computerPlaceCards() {
-    for (int x = 0; x <= 5; x ++)
-    {
+    for (int x = 0; x <= 5; x++) {
       int PlaceHand = choice.nextInt((5 - 1) + 1) + 1;
       int PlaceField = choice.nextInt((5 - 1) + 1) + 1;
       // Check if spot on field is empty, if it is not, just increment to next spot
@@ -39,12 +37,21 @@ public class ComputerOpponent
   }
 
   public void InvokeComputerAttack() {
-
-
-
+    Card[] playField = player.getPlayField();
+    Card[] compField = ComputerOpponent.getPlayField();
+    for (int x = 0; x <= 5; x++) {
+      //magicgame.magicthegathering. Computer attacks Player. i.e. Update player field.
+      try {
+        playField[x].health -= compField[x].attack;
+        compField[x].endTurn();
+      } catch (NullPointerException e) {
+        if (playField[x] == null) {
+          player.damageHealth(compField[x].attack);
+          compField[x].endTurn();
+          // else player doesn't have a card in current loc.
+        }
+      }
+    }
   }
-
-
-
 }
 
