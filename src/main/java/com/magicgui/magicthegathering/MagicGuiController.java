@@ -2,10 +2,10 @@ package com.magicgui.magicthegathering;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import java.beans.PropertyChangeEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
@@ -24,6 +24,8 @@ public class MagicGuiController {
     @FXML private Label ManaProgressBarLabel;
     @FXML private ProgressBar CPUHealthProgressBar;
     @FXML private Label CPUHealthProgressBarLabel;
+    @FXML private ProgressBar CPUManaProgressBar;
+    @FXML private Label CPUManaProgressBarLabel;
     @FXML private TextField PlayerCardDescriptionTextField;
     @FXML private GridPane PlayerHandGridPane;
 
@@ -45,6 +47,7 @@ public class MagicGuiController {
         ImageView currentSpace = (ImageView) event.getPickResult().getIntersectedNode();
 
         System.out.println(event.getPickResult().getIntersectedNode());
+        System.out.println(event.getSource());
 
         if (db.hasString() && currentSpace.getImage() != db.getImage()) {
             Integer cIndex = GridPane.getColumnIndex(currentSpace);
@@ -53,6 +56,8 @@ public class MagicGuiController {
             // not sure exactly how to find location of where card is dragged from just yet
             // game.passCardDragLocation(battleFieldLocation, playerHandLocation);
             success = true;
+        } else {
+//            PlayerHandGridPane.add(new ImageView(db.getImage()), )
         }
         event.setDropCompleted(success);
         event.consume();
@@ -73,23 +78,26 @@ public class MagicGuiController {
         event.consume();
     }
 
+
     @FXML
     void DeckAddCard(ActionEvent event) {
         // creates new random card
 //         Card randomCard = game.getRandomCard();
 //         ImageView newVisualCard = new ImageView(new Image(getClass().getResourceAsStream(newCard.getImageLink()), 100, 100, false, true));
 
+        ImageView newVisualCard = new ImageView();
         // temp card visual
-        ImageView newVisualCard = new ImageView(new Image(getClass().getResourceAsStream("card.jpg"), 100, 100, false, true));
-
+        if (cardsInGame % 2 == 0) {
+            newVisualCard.setImage((new Image(getClass().getResourceAsStream("Travellers.png"), 135, 180, false, true)));
+        } else {
+            newVisualCard.setImage((new Image(getClass().getResourceAsStream("card.jpg"), 135,180,false, true)));
+        }
         newVisualCard.addEventHandler(MouseEvent.DRAG_DETECTED, this::DraggingMainItem);
         newVisualCard.addEventFilter(MouseEvent.DRAG_DETECTED, this::DraggingMainItem);
-        newVisualCard.setId("card" + cardsInGame);
+        newVisualCard.setId("card" + String.valueOf(cardsInGame));
         PlayerHandGridPane.add(newVisualCard, cardsInGame%7, 0);
         cardsInGame++;
-
     }
-
 
     @FXML
     void EndCurrentTurn(ActionEvent event) {
@@ -107,18 +115,21 @@ public class MagicGuiController {
 //        ChangeListener healthListener = new ChangeListener() {
 //            @Override
 //            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
-//                HealthProgressBar.setProgress(newValue / game.getMaxHealth);
+//                HealthProgressBar.setProgress(newValue / game.getMaxHealth());
 //                HealthProgressBarLabel.setText(String.format("Health: %f / %f", newValue, game.getMaxHealth);
 //            }};
 //
 //        ChangeListener manaListener = new ChangeListener() {
 //            @Override
 //            public void changed(ObservableValue observableValue, Object oldValue, Object newValue) {
-//                ManaProgressBar.setProgress(newValue / game.getMaxMana);
+//                ManaProgressBar.setProgress(newValue / game.getMaxMana());
 //                ManaProgressBarLabel.setText(String.format("Health: %f / %f", newValue, game.getMaxMana);
 //            }};
-//        playerHealth.addListener(healthListener);
-//        playerMana.addListener(manaListener);
+
+//        game.getPlayerHealth().addListener(healthListener);
+//        game.getPlayerMana().addListener(manaListener);
+//        game.getCpuMana().addListener(healthListener);
+//        game.getCpuHealth().addListener(manaListener);
     }
 
 }
