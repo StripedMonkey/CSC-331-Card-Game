@@ -88,6 +88,7 @@ public class Player{
 
     public void drawCard() {
         Card toAdd = deck.pop();
+        hand.add(toAdd);
         support.firePropertyChange("HandEvent", toAdd, hand.indexOf(toAdd));
     }
 
