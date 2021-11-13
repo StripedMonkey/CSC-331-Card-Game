@@ -75,7 +75,10 @@ public class Player{
         //buyCard check will update mana.
         if (playField[fieldIndex] == null && cardType.equals(drawType.PLACE)){
             playField[fieldIndex] = hand.get(handIndex);
+            support.firePropertyChange("FieldEvent", hand.get(handIndex), fieldIndex);
             playField[fieldIndex].addPropertyChangeListener("DeadEvent", evt -> playField[fieldIndex] = null);
+            Card toRemove = hand.get(handIndex);
+            support.firePropertyChange("HandEvent", toRemove, hand.indexOf(toRemove));
             hand.remove(handIndex);
         }
         if (cardType.equals(drawType.CANT_AFFORD)){
@@ -83,7 +86,10 @@ public class Player{
         }
     }
 
-    public void drawCard() {  hand.add(deck.pop()); }
+    public void drawCard() {
+        Card toAdd = deck.pop();
+        support.firePropertyChange("HandEvent", toAdd, hand.indexOf(toAdd));
+    }
 
 
     public Card getPlayFieldCard(int index){ return playField[index]; } //Shouldn't be used
