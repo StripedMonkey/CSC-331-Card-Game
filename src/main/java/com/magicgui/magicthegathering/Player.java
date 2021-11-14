@@ -93,8 +93,8 @@ public class Player{
         Card toAdd = deck.pop();
         if (hand.contains(null)){
             hand.set(hand.indexOf(null), toAdd);
+            support.firePropertyChange("HandEvent", toAdd, hand.indexOf(toAdd));
         }
-        support.firePropertyChange("HandEvent", toAdd, hand.indexOf(toAdd));
     }
 
 
