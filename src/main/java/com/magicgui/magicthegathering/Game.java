@@ -3,9 +3,6 @@ package com.magicgui.magicthegathering;
 
 // Not complete...
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 public class Game {
     private Player player;
     private Player computer;
@@ -21,8 +18,9 @@ public class Game {
     }
 
     //Updates player Field and Hand.
-    public void updatePlayerField(int handIndex, int fieldIndex){
-        this.player.placeCard(handIndex, fieldIndex);
+    public boolean updatePlayerField(int handIndex, int fieldIndex){
+        boolean droppable = this.player.placeCard(handIndex, fieldIndex);
+        return droppable;
     }
 
 

@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -73,19 +74,20 @@ public class MagicGuiController {
             public void handle(DragEvent event) {
                 Dragboard db = event.getDragboard();
                 boolean success = false;
-                ImageView currentSpace = (ImageView) event.getPickResult().getIntersectedNode();
+                Node currentSpace = (Node) event.getPickResult().getIntersectedNode();
 
                 if (db.hasString()) {
                     Integer cHandIndex = GridPane.getColumnIndex(cardPaneMap.get(db.getString()));
                     Integer cFieldIndex = GridPane.getColumnIndex(currentSpace);
                     int  fieldLocation = cFieldIndex == null ? 0 : cFieldIndex;
                     int handLocation = cHandIndex == null ? 0 : cHandIndex;
-                    System.out.println(handLocation);
-                    game.updatePlayerField(handLocation, fieldLocation);
-                    PlayerFieldGrid.add(cardPaneMap.get(db.getString()), fieldLocation, 0);
-                    success = true;
-                }
 
+                    boolean droppable = game.updatePlayerField(handLocation, fieldLocation);
+                    if (droppable) {
+                        PlayerFieldGrid.add(cardPaneMap.get(db.getString()), fieldLocation, 0);
+                        success = true;
+                    }
+                }
                 event.setDropCompleted(success);
                 event.consume();}
         });
@@ -118,7 +120,7 @@ public class MagicGuiController {
             int maxMana = ((Player)PropertyChangeEvent.getSource()).getMaxMana();
             int newMana = (int)PropertyChangeEvent.getNewValue();
             ManaProgressBar.setProgress((float)newMana / maxMana);
-            ManaProgressBarLabel.setText(String.format("Health: %d / %d", newMana, maxMana));
+            ManaProgressBarLabel.setText(String.format("Mana: %d / %d", newMana, maxMana));
         });
 
         game.getPlayer().addPropertyChangeListener("FieldEvent", PropertyChangeEvent -> {

@@ -58,7 +58,7 @@ public class Player{
             else {
                 int initialMana = this.mana;
                 this.mana -= hand.get(handIndex).getCost();
-                support.firePropertyChange("Mana Changed.", initialMana, this.mana);
+                support.firePropertyChange("ManaEvent", initialMana, this.mana);
                 return drawType.PLACE;
             }
         }
@@ -71,22 +71,24 @@ public class Player{
      * @param  handIndex : Represents the index value of hand loc.
      * @param fieldIndex : Represents the index value of playField loc.
      */
-    public void placeCard(int handIndex, int fieldIndex) {
+    public boolean placeCard(int handIndex, int fieldIndex) {
         drawType cardType = buyCard(handIndex);
         //buyCard check will update mana.
+        boolean dropped = false;
         if (playField[fieldIndex] == null && cardType.equals(drawType.PLACE)){
             playField[fieldIndex] = hand.get(handIndex);
             support.firePropertyChange("FieldEvent", hand.get(handIndex), fieldIndex);
             playField[fieldIndex].addPropertyChangeListener("DeadEvent", evt -> playField[fieldIndex] = null);
             Card toRemove = hand.get(handIndex);
             hand.set(handIndex, null);
-            support.firePropertyChange("HandEvent", toRemove, handIndex);
             System.out.println(this.getPlayField());
             System.out.println("Printing playfield | Backend.");
+            dropped = true;
         }
         if (cardType.equals(drawType.CANT_AFFORD)){
             //can't afford
         }
+        return dropped;
     }
 
     public void drawCard() {
@@ -103,6 +105,9 @@ public class Player{
     public int getMaxMana() {return this.maxMana;}
     public int getBaseHealth() { return baseHealth; }
     public boolean isDead() {return this.health < 0;}
+    public List<Card> getHand() {return hand;}
+
+    public int getMana() {return mana;}
 
     public void incMaxMana(){
         this.maxMana += 4;
