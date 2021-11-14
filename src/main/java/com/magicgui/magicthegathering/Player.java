@@ -79,7 +79,7 @@ public class Player{
             support.firePropertyChange("FieldEvent", hand.get(handIndex), fieldIndex);
             playField[fieldIndex].addPropertyChangeListener("DeadEvent", evt -> playField[fieldIndex] = null);
             Card toRemove = hand.get(handIndex);
-            hand.remove(handIndex);
+            hand.set(handIndex, null);
             support.firePropertyChange("HandEvent", toRemove, handIndex);
             System.out.println(this.getPlayField());
             System.out.println("Printing playfield | Backend.");
