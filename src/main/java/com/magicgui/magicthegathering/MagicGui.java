@@ -10,6 +10,10 @@ import java.io.IOException;
 
 
 public class MagicGui extends Application {
+    public static void main(String[] args) {
+        launch();
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("MagicGui.fxml"));
@@ -17,9 +21,5 @@ public class MagicGui extends Application {
         stage.setTitle("Magic The Gathering");
         stage.setScene(scene);
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }

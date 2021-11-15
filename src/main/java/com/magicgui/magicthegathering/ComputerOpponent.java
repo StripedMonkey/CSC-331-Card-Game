@@ -6,32 +6,33 @@ package com.magicgui.magicthegathering;
 import java.util.Random;
 
 public class ComputerOpponent {
-  private Player ComputerOpponent;
-  private Random choice;
-  // Initialize the Player
-  ComputerOpponent(Player ComputerOpponent) {
-    this.ComputerOpponent = ComputerOpponent;
-    choice = new Random();
-  }
+    private final Player ComputerOpponent;
+    private final Random choice;
 
-  public void computerDraw() {
-    ComputerOpponent.drawCard();
-  }
+    // Initialize the Player
+    ComputerOpponent(Player ComputerOpponent) {
+        this.ComputerOpponent = ComputerOpponent;
+        choice = new Random();
+    }
 
-  // Attacking must consider how many cards in the hand(null), randomly select from the hand,
-  // and randomly place in the field.
-  // Starting out with 7 cards
+    public void computerDraw() {
+        ComputerOpponent.drawCard();
+    }
 
-  public void computerPlaceCards() {
-      int PlaceHand = choice.nextInt(4);
-      while (ComputerOpponent.getHand().get(PlaceHand) == null) {
-        PlaceHand = choice.nextInt(4);
-      }
-      int PlaceField = choice.nextInt(4);
-      // Check if spot on field is empty, if it is not, just increment to next spot
-      if (ComputerOpponent.getPlayField() != null) {
-        ComputerOpponent.placeCard(PlaceHand, PlaceField);
-      }
+    // Attacking must consider how many cards in the hand(null), randomly select from the hand,
+    // and randomly place in the field.
+    // Starting out with 7 cards
+
+    public void computerPlaceCards() {
+        int PlaceHand = choice.nextInt(4);
+        while (ComputerOpponent.getHand().get(PlaceHand) == null) {
+            PlaceHand = choice.nextInt(4);
+        }
+        int PlaceField = choice.nextInt(4);
+        // Check if spot on field is empty, if it is not, just increment to next spot
+        if (ComputerOpponent.getPlayField() != null) {
+            ComputerOpponent.placeCard(PlaceHand, PlaceField);
+        }
     }
 }
 

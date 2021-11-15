@@ -31,9 +31,9 @@ public class DeckBuilder {
 
         Effect effect = generateRandomEffect();
         List<Effect> effects = new ArrayList<>();
-        String imagePath = "card.jpg";
+        String imagePath = "Creature_Travellers.png";
 
-        return new Card(attack, health, cost, effects, "Beautiful default description", imagePath,false);
+        return new Card(attack, health, cost, effects, "Beautiful default description", imagePath, false);
 
     }
 

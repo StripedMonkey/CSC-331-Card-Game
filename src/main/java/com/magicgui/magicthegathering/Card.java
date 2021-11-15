@@ -19,7 +19,7 @@ public class Card {
     private int cost;
 
 
-    Card(int attack, int health, int cost, List<Effect> effects, String description, String imagePath,boolean isSpellCard) {
+    Card(int attack, int health, int cost, List<Effect> effects, String description, String imagePath, boolean isSpellCard) {
         this.attack = attack;
         this.baseHealth = health;
         this.cost = cost;
@@ -67,22 +67,21 @@ public class Card {
     public void setHealth(int health) {
         int oldHealth = this.health;
         this.health = health;
-        if (health <= 0) {
 
-            if (health <= 0) {
-                for (Effect effect :
-                        effects) {
-                    if (effect instanceof LastStandEffect) {
-                        removeEffect(effect);
-                        this.health = 1;
-                    }
-                }
-                if(health<=0){
-                    setDead(true);
+        if (this.health <= 0) {
+            for (Effect effect :
+                    effects) {
+                if (effect instanceof LastStandEffect) {
+                    removeEffect(effect);
+                    this.health = 1;
                 }
             }
+            if (this.health <= 0) {
+                setDead(true);
+            }
+
         }
-        eventHelper.firePropertyChange("HealthEvent",oldHealth,this.health);
+        eventHelper.firePropertyChange("HealthEvent", oldHealth, this.health);
     }
 
     public int getCost() {
@@ -106,6 +105,9 @@ public class Card {
     public void setDead(boolean isDead) {
         boolean oldDead = this.isDead;
         this.isDead = isDead;
+        if (isDead) {
+            System.out.println("Card died");
+        }
         eventHelper.firePropertyChange("DeadEvent", oldDead, this.isDead);
     }
 
@@ -143,10 +145,11 @@ public class Card {
         for (Effect effect : effects) {
             effect.endTurn(this);
         }
-        setHealth(getBaseHealth());
+        //setHealth(getBaseHealth());
     }
 
     public void damage(int damage) {
+        System.out.println("Damaging card by " + damage);
         setHealth(getHealth() - damage);
     }
 
