@@ -127,8 +127,16 @@ public class MagicGuiController {
         game.getComputer().addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> {
             int newHealth = (int) PropertyChangeEvent.getNewValue();
             int baseHealth = ((Player) PropertyChangeEvent.getSource()).getBaseHealth();
-            CPUHealthProgressBar.setProgress((float) newHealth / baseHealth);
-            CPUHealthProgressBarLabel.setText(String.format("Health: %d / %d", newHealth, baseHealth));
+            if (newHealth <= 0){
+                PlayerCardDescriptionTextField.setText("CONGRATULATIONS YOU WON!!!");
+                CPUHealthProgressBar.setProgress((float) newHealth / baseHealth);
+                CPUHealthProgressBarLabel.setText(String.format("COMPUTER DOWN"));
+            }
+            else{
+                PlayerCardDescriptionTextField.setText("Play to win");
+                CPUHealthProgressBar.setProgress((float) newHealth / baseHealth);
+                CPUHealthProgressBarLabel.setText(String.format("Health: %d / %d", newHealth, baseHealth));
+            }
         });
 
         game.getComputer().addPropertyChangeListener("ManaEvent", PropertyChangeEvent -> {
@@ -148,8 +156,16 @@ public class MagicGuiController {
         game.getPlayer().addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> {
             int newHealth = (int) PropertyChangeEvent.getNewValue();
             int baseHealth = ((Player) PropertyChangeEvent.getSource()).getBaseHealth();
-            HealthProgressBar.setProgress((float) newHealth / baseHealth);
-            HealthProgressBarLabel.setText(String.format("Health: %d / %d", newHealth, baseHealth));
+            if (newHealth <= 0){
+                PlayerCardDescriptionTextField.setText("You lost this time");
+                HealthProgressBar.setProgress((float) newHealth / baseHealth);
+                HealthProgressBarLabel.setText(String.format("REST IN RIP"));
+            }
+            else{
+                PlayerCardDescriptionTextField.setText("Play to win");
+                HealthProgressBar.setProgress((float) newHealth / baseHealth);
+                HealthProgressBarLabel.setText(String.format("Health: %d / %d", newHealth, baseHealth));
+            }
         });
 
 
