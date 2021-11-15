@@ -1,16 +1,17 @@
 package com.magicgui.magicthegathering;
 
-class ShockEffect extends Effect
-{
+class ShockEffect extends Effect {
     int duration;
 
-    ShockEffect(int duration){
+    ShockEffect(int duration) {
         this.duration = duration;
     }
+
     @Override
     void cast(Player targetPlayer, Card targetCard, Card castingCard, Player enemyPlayer) {
         targetCard.addEffect(this);
     }
+
     @Override
     void endTurn(Card castingCard) {
         duration -= 1;

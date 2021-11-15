@@ -1,12 +1,12 @@
 package com.magicgui.magicthegathering;
 
-class DegenEffect extends Effect
-{
+class DegenEffect extends Effect {
     int duration;
 
     DegenEffect(int duration) {
-    this.duration = duration;
+        this.duration = duration;
     }
+
     @Override
     void cast(Player targetPlayer, Card targetCard, Card castingCard, Player enemyPlayer) {
         targetCard.addEffect(this);

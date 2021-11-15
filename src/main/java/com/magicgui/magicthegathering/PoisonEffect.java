@@ -1,12 +1,12 @@
 package com.magicgui.magicthegathering;
 
-class PoisonEffect extends Effect
-{
+class PoisonEffect extends Effect {
     int duration;
 
     PoisonEffect(int duration) {
         this.duration = duration;
     }
+
     @Override
     void cast(Player targetPlayer, Card targetCard, Card castingCard, Player enemyPlayer) {
         targetCard.addEffect(this);

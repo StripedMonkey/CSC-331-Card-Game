@@ -1,12 +1,12 @@
 package com.magicgui.magicthegathering;
 
-class ColdSnapEffect extends Effect
-{
+class ColdSnapEffect extends Effect {
     int duration;
 
     ColdSnapEffect(int duration) {
         this.duration = duration;
     }
+
     @Override
     void cast(Player targetPlayer, Card targetCard, Card castingCard, Player enemyPlayer) {
         targetCard.addEffect(this);

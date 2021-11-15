@@ -1,6 +1,6 @@
 package com.magicgui.magicthegathering;
 
-abstract public class Effect {
+public abstract class Effect {
     void cast(Player targetPlayer, Card targetCard, Card castingCard, Player enemyPlayer) {
     }
 

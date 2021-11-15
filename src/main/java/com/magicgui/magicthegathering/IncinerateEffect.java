@@ -1,12 +1,12 @@
 package com.magicgui.magicthegathering;
 
-class IncinerateEffect extends Effect
-{
+class IncinerateEffect extends Effect {
     int duration;
 
-    IncinerateEffect(int duration){
+    IncinerateEffect(int duration) {
         this.duration = duration;
     }
+
     @Override
     void cast(Player targetplayer, Card targetCard, Card castingCard, Player enemyPlayer) {
         targetCard.addEffect(this);
