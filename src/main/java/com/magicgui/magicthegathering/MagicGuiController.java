@@ -70,7 +70,7 @@ public class MagicGuiController {
         CPUHealthProgressBarLabel.setText(String.format("Health: %d / %d", game.getComputer().getBaseHealth(), game.getComputer().getBaseHealth()));
 
 
-        cardPaneMap = new HashMap<String, Pane>();
+        cardPaneMap = new HashMap<>();
 
         // Deck Button add card Event
         DeckButton.pressedProperty().addListener((observableValue, aBoolean, t1) -> {
@@ -169,28 +169,16 @@ public class MagicGuiController {
 
         Label cardHealthLabel = new Label();
         String healthString = String.format("%s", currentCard.getHealth());
-        System.out.println("Card Health: " + healthString);
-        cardHealthLabel.setText(healthString);
-        cardHealthLabel.setTextFill(Paint.valueOf("white"));
-        cardHealthLabel.setPadding(new Insets(10));
-        StackPane.setAlignment(cardHealthLabel, Pos.BOTTOM_LEFT);
+        formatLabel(cardHealthLabel, healthString, Pos.BOTTOM_LEFT);
 
 
         Label cardAttackLabel = new Label();
         String attackString = String.format("%s", currentCard.getAttack());
-        System.out.println("Card Attack: " + currentCard.getAttack());
-        cardAttackLabel.setText(String.format("%s", currentCard.getAttack()));
-        cardAttackLabel.setTextFill(Paint.valueOf("white"));
-        cardAttackLabel.setPadding(new Insets(10));
-        StackPane.setAlignment(cardAttackLabel, Pos.BOTTOM_RIGHT);
+        formatLabel(cardAttackLabel,attackString, Pos.BOTTOM_RIGHT);
 
         Label cardCostLabel = new Label();
         String costString = String.format("%s", currentCard.getCost());
-        System.out.println("Card Cost: " + costString);
-        cardCostLabel.setText(String.format("%s", costString));
-        cardCostLabel.setTextFill(Paint.valueOf("white"));
-        cardCostLabel.setPadding(new Insets(10));
-        StackPane.setAlignment(cardCostLabel, Pos.TOP_RIGHT);
+        formatLabel(cardCostLabel, costString, Pos.TOP_RIGHT);
 
 
         cardPane.setId(String.valueOf(currentCard));
@@ -215,15 +203,18 @@ public class MagicGuiController {
         cardPane.setOnMouseEntered(mouseEvent -> PlayerCardDescriptionTextField.setText(currentCard.getDescription()));
         cardPane.setOnMouseExited(mouseEvent -> PlayerCardDescriptionTextField.setText(""));
 
-        currentCard.addPropertyChangeListener("DeadEvent", PropertyChangeEvent -> {
-            ((GridPane) cardPane.getParent()).getChildren().remove(cardPane);
-        });
-        currentCard.addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> {
-            cardHealthLabel.setText(String.valueOf(PropertyChangeEvent.getNewValue()));
-        });
+        currentCard.addPropertyChangeListener("DeadEvent", PropertyChangeEvent -> ((GridPane) cardPane.getParent()).getChildren().remove(cardPane));
+        currentCard.addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> cardHealthLabel.setText(String.valueOf(PropertyChangeEvent.getNewValue())));
 
 
         return cardPane;
+    }
+
+    private void formatLabel(Label cardLabel, String value, Pos labelPosition) {
+        cardLabel.setText(value);
+        cardLabel.setTextFill(Paint.valueOf("white"));
+        cardLabel.setPadding(new Insets(10));
+        StackPane.setAlignment(cardLabel, labelPosition);
     }
 
 }
