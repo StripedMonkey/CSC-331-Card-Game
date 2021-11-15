@@ -68,6 +68,7 @@ public class Card {
     public void setHealth(int health) {
         int oldHealth = this.health;
         this.health = health;
+        eventHelper.firePropertyChange("HealthEvent", oldHealth, this.health);
 
         if (this.health <= 0) {
             for (Effect effect :
@@ -82,7 +83,6 @@ public class Card {
             }
 
         }
-        eventHelper.firePropertyChange("HealthEvent", oldHealth, this.health);
     }
 
     public int getCost() {

@@ -24,38 +24,24 @@ import java.util.Objects;
 
 public class MagicGuiController {
     private static Map<String, Pane> cardPaneMap;
-    int cardsInGame = 0;
-    @FXML
-    private Button DeckButton;
-    @FXML
-    private Button EndTurnButton;
-    @FXML
-    private GridPane PlayerFieldGrid;
-    @FXML
-    private GridPane ComputerFieldGrid;
-    @FXML
-    private ProgressBar HealthProgressBar;
-    @FXML
-    private Label HealthProgressBarLabel;
-    @FXML
-    private ProgressBar ManaProgressBar;
-    @FXML
-    private Label ManaProgressBarLabel;
-    @FXML
-    private ProgressBar CPUHealthProgressBar;
-    @FXML
-    private Label CPUHealthProgressBarLabel;
-    @FXML
-    private ProgressBar CPUManaProgressBar;
-    @FXML
-    private Label CPUManaProgressBarLabel;
-    @FXML
-    private TextArea PlayerCardDescriptionTextField;
-    @FXML
-    private GridPane PlayerHandGridPane;
+    @FXML private Button DeckButton;
+    @FXML private Button EndTurnButton;
+    @FXML private GridPane PlayerFieldGrid;
+    @FXML private GridPane ComputerFieldGrid;
+    @FXML private ProgressBar HealthProgressBar;
+    @FXML private Label HealthProgressBarLabel;
+    @FXML private ProgressBar ManaProgressBar;
+    @FXML private Label ManaProgressBarLabel;
+    @FXML private ProgressBar CPUHealthProgressBar;
+    @FXML private Label CPUHealthProgressBarLabel;
+    @FXML private ProgressBar CPUManaProgressBar;
+    @FXML private Label CPUManaProgressBarLabel;
+    @FXML private TextArea PlayerCardDescriptionTextField;
+    @FXML private GridPane PlayerHandGridPane;
 
     public void initialize() {
         Game game = new Game();
+        cardPaneMap = new HashMap<>();
 
         ManaProgressBar.setProgress(1);
         ManaProgressBarLabel.setText(String.format("Mana: %d / %d", game.getComputer().getMaxMana(), game.getComputer().getMaxMana()));
@@ -68,9 +54,6 @@ public class MagicGuiController {
         CPUHealthProgressBar.setProgress(1);
         CPUHealthProgressBar.setStyle("-fx-accent: red");
         CPUHealthProgressBarLabel.setText(String.format("Health: %d / %d", game.getComputer().getBaseHealth(), game.getComputer().getBaseHealth()));
-
-
-        cardPaneMap = new HashMap<>();
 
         // Deck Button add card Event
         DeckButton.pressedProperty().addListener((observableValue, aBoolean, t1) -> {
@@ -86,6 +69,30 @@ public class MagicGuiController {
             }
         });
 
+        ComputerFieldGrid.setOnDragDropped(event -> {
+            Node currentSpace = event.getPickResult().getIntersectedNode();
+            Dragboard db = event.getDragboard();
+
+            if (db.hasString()){
+                Integer cHandIndex = GridPane.getColumnIndex(cardPaneMap.get(db.getString()));
+                Integer cFieldIndex = GridPane.getColumnIndex(currentSpace);
+                int fieldLocation = cFieldIndex == null ? 0 : cFieldIndex;
+                int handLocation = cHandIndex == null ? 0 : cHandIndex;
+
+                boolean droppable = game.updatePlayerField(handLocation, fieldLocation);
+
+                if (droppable){
+                    PlayerHandGridPane.getChildren().remove(cardPaneMap.get(db.getString()));
+                }
+            }
+        });
+        ComputerFieldGrid.setOnDragOver(event -> {
+            if (event.getGestureSource() != PlayerFieldGrid
+                    && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+            event.consume();
+        });
 
         PlayerFieldGrid.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
