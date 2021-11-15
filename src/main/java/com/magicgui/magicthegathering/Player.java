@@ -80,9 +80,6 @@ public class Player {
             System.out.println("Printing playfield | Backend.");
             dropped = true;
         }
-        if (cardType.equals(drawType.CANT_AFFORD)) {
-            //can't afford
-        }
         return dropped;
     }
 
@@ -118,14 +115,6 @@ public class Player {
         return hand;
     }
 
-    public int getMana() {
-        return mana;
-    }
-
-    public void incMaxMana() {
-        this.maxMana += 4;
-    }
-
     public void endTurn() {
         for (Card c : playField) {
             if (c != null) {
@@ -148,7 +137,12 @@ public class Player {
         System.out.println("Damaging Enemy health by " + damage);
         int initialHealth = this.health;
         this.health -= damage;
-        support.firePropertyChange("HealthEvent", initialHealth, this.health);
+        if (this.health <= 0) {
+            support.firePropertyChange("DeathEvent", initialHealth, this.health);
+        }
+        else{
+            support.firePropertyChange("HealthEvent", initialHealth, this.health);
+        }
     }
 
     public void addPropertyChangeListener(String pName, PropertyChangeListener pcl) {
@@ -163,7 +157,7 @@ public class Player {
         return health;
     }
 
-    private enum drawType {CANT_AFFORD, SPELL, OCCUPIED, PLACE}
+    private enum drawType {CANT_AFFORD, SPELL, PLACE}
 
 }
 
