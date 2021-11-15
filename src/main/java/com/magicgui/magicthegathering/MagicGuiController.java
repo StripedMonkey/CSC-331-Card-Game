@@ -1,6 +1,5 @@
 package com.magicgui.magicthegathering;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,14 +12,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -171,26 +168,29 @@ public class MagicGuiController {
         Image cardImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(currentCard.getImagePath())), 135, 180, true, true);
 
         Label cardHealthLabel = new Label();
-        cardHealthLabel.setText(String.format("%s",currentCard.getHealth()));
+        String healthString = String.format("%s", currentCard.getHealth());
+        System.out.println("Card Health: " + healthString);
+        cardHealthLabel.setText(healthString);
         cardHealthLabel.setTextFill(Paint.valueOf("white"));
         cardHealthLabel.setPadding(new Insets(10));
         StackPane.setAlignment(cardHealthLabel, Pos.BOTTOM_LEFT);
-        System.out.println("Card Health: "+currentCard.getAttack());
 
 
         Label cardAttackLabel = new Label();
-        cardAttackLabel.setText(String.format("%s",currentCard.getAttack()));
+        String attackString = String.format("%s", currentCard.getAttack());
+        System.out.println("Card Attack: " + currentCard.getAttack());
+        cardAttackLabel.setText(String.format("%s", currentCard.getAttack()));
         cardAttackLabel.setTextFill(Paint.valueOf("white"));
         cardAttackLabel.setPadding(new Insets(10));
         StackPane.setAlignment(cardAttackLabel, Pos.BOTTOM_RIGHT);
-        System.out.println("Card Attack: "+currentCard.getAttack());
 
         Label cardCostLabel = new Label();
-        cardCostLabel.setText(String.format("%s",currentCard.getCost()));
+        String costString = String.format("%s", currentCard.getCost());
+        System.out.println("Card Cost: " + costString);
+        cardCostLabel.setText(String.format("%s", costString));
         cardCostLabel.setTextFill(Paint.valueOf("white"));
         cardCostLabel.setPadding(new Insets(10));
         StackPane.setAlignment(cardCostLabel, Pos.TOP_RIGHT);
-        System.out.println("Card Cost: "+currentCard.getAttack());
 
 
         cardPane.setId(String.valueOf(currentCard));
