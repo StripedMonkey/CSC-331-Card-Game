@@ -22,6 +22,7 @@ public class Card {
     Card(int attack, int health, int cost, List<Effect> effects, String description, String imagePath, boolean isSpellCard) {
         this.attack = attack;
         this.baseHealth = health;
+        this.health = health;
         this.cost = cost;
         this.effects = effects;
         this.description = description;
