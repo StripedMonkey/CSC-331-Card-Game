@@ -19,12 +19,17 @@ public class Player {
     private int health = baseHealth;
     private int maxMana = 3;
     private int mana = 3;
+    private boolean canDraw = true;
 
     public Player(List<Card> cardDeck) {
         support = new PropertyChangeSupport(this);
         //init deck
         for (Card card : cardDeck) {
             deck.push(card);
+        }
+        for (int i = 0; i < 5; i++) {
+            hand.set(i, deck.pop());
+            support.firePropertyChange("HandEvent", null, hand.get(i));
         }
     }
 
@@ -66,7 +71,7 @@ public class Player {
      * @param handIndex  : Represents the index value of hand loc.
      * @param fieldIndex : Represents the index value of playField loc.
      */
-    public boolean placeCard(int handIndex, int fieldIndex) {
+    public boolean placeCard(int handIndex, int fieldIndex, Game game) {
         drawType cardType = buyCard(handIndex);
         //buyCard check will update mana.
         boolean dropped = false;
@@ -80,15 +85,20 @@ public class Player {
             System.out.println("Printing playfield | Backend.");
             dropped = true;
         }
+        if (cardType.equals(drawType.SPELL)){
+            hand.get(handIndex).cast(game.getComputer(), game.getComputer().getPlayFieldCard(fieldIndex), game.getPlayer());
+            dropped = true;
+        }
         return dropped;
     }
 
     public void drawCard() {
         Card toAdd = deck.pop();
-        if (hand.contains(null)) {
+        if (hand.contains(null) && canDraw) {
             hand.set(hand.indexOf(null), toAdd);
             support.firePropertyChange("HandEvent", toAdd, hand.indexOf(toAdd));
         }
+        this.canDraw = false;
     }
 
     public Card getPlayFieldCard(int index) {
@@ -121,6 +131,7 @@ public class Player {
                 c.endTurn();
             }
         }
+        this.canDraw = true;
         addMana();
     }
 

@@ -57,6 +57,7 @@ public class MagicGuiController {
     public void initialize() {
         Game game = new Game();
 
+
         ManaProgressBar.setProgress(1);
         ManaProgressBarLabel.setText(String.format("Mana: %d / %d", game.getComputer().getMaxMana(), game.getComputer().getMaxMana()));
         HealthProgressBar.setStyle("-fx-accent: red");

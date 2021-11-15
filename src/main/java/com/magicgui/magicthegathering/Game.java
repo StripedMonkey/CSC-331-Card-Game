@@ -18,11 +18,11 @@ public class Game {
     }
 
     //Updates player Field and Hand.
+    // Can be used for spell casting on enemy field.
     public boolean updatePlayerField(int handIndex, int fieldIndex) {
-        boolean droppable = this.player.placeCard(handIndex, fieldIndex);
+        boolean droppable = this.player.placeCard(handIndex, fieldIndex, this);
         return droppable;
     }
-
 
     // I.e. The end of both turns.
     public void onEndTurn() {
@@ -30,7 +30,7 @@ public class Game {
         currentTurn += 1;
         if (currentTurn % 2 == 0) { // even => computer turn.
             ai.computerDraw();
-            ai.computerPlaceCards();
+            ai.computerPlaceCards(this);
             printBoard();
             computer.invokeAttack(player);
             computer.endTurn();
