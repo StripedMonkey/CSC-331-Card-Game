@@ -5,33 +5,41 @@ package com.magicgui.magicthegathering;
 
 import java.util.Random;
 
+/**
+ * The computerOpponents operations.
+ */
 public class ComputerOpponent {
     private final Player ComputerOpponent;
     private final Random choice;
 
-    // Initialize the Player
+    /**
+     * ComputerOpponent Constructor...
+     * @param ComputerOpponent The computer player object.
+     */
     ComputerOpponent(Player ComputerOpponent) {
         this.ComputerOpponent = ComputerOpponent;
         choice = new Random();
     }
 
+    /**
+     * Draws a card from the deck.
+     */
     public void computerDraw() {
         ComputerOpponent.drawCard();
     }
 
-    // Attacking must consider how many cards in the hand(null), randomly select from the hand,
-    // and randomly place in the field.
-    // Starting out with 7 cards
-
+    /**
+     * Places the card in the computer play Field
+     * @param game The game object.
+     */
     public void computerPlaceCards(Game game) {
         int PlaceHand = choice.nextInt(4);
         while (ComputerOpponent.getHand().get(PlaceHand) == null) {
             PlaceHand = choice.nextInt(4);
         }
         int PlaceField = choice.nextInt(4);
-        // Check if spot on field is empty, if it is not, just increment to next spot
         if (ComputerOpponent.getPlayField() != null) {
-            ComputerOpponent.placeCard(PlaceHand, PlaceField, game);
+            ComputerOpponent.placeCard(PlaceHand, PlaceField, game, 1);
         }
     }
 }

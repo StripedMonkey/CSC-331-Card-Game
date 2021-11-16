@@ -81,7 +81,7 @@ public class Player {
      * @param handIndex  : Represents the index value of hand loc.
      * @param fieldIndex : Represents the index value of playField loc.
      */
-    public boolean placeCard(int handIndex, int fieldIndex, Game game) {
+    public boolean placeCard(int handIndex, int fieldIndex, Game game, int attacker) {
         drawType cardType = buyCard(handIndex);
         //buyCard check will update mana.
         boolean dropped = false;
@@ -98,7 +98,13 @@ public class Player {
             dropped = true;
         }
         if (cardType.equals(drawType.SPELL)){
-            hand.get(handIndex).cast(game.getComputer(), game.getComputer().getPlayFieldCard(fieldIndex), game.getPlayer());
+            if (attacker == 0) { // player
+                hand.get(handIndex).cast(game.getComputer(), game.getComputer().getPlayFieldCard(fieldIndex), game.getPlayer());
+            }
+            else { // Computer
+                hand.get(handIndex).cast(game.getPlayer(), game.getPlayer().getPlayFieldCard(fieldIndex), game.getComputer());
+
+            }
             dropped = true;
         }
         return dropped;

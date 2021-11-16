@@ -27,7 +27,7 @@ public class Game {
      * @return droppable, represents the state to which the card can either be dropped or not.
      */
     public boolean updatePlayerField(int handIndex, int fieldIndex) {
-        return this.player.placeCard(handIndex, fieldIndex, this);
+        return this.player.placeCard(handIndex, fieldIndex, this, 0);
     }
 
     /**
