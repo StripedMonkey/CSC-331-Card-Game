@@ -45,7 +45,7 @@ public class Player {
      */
     public void invokeAttack(Player enemy) {
         Card[] enemyPlayField = enemy.getPlayField();
-        for (int i = 0; i < enemyPlayField.length; i++) {
+        for (int i = 0; i < playField.length; i++) {
             if (playField[i] != null) {
                 if (enemyPlayField[i] == null) {
                     enemy.damageHealth(playField[i].getAttack());
@@ -156,9 +156,7 @@ public class Player {
         if (this.health <= 0) {
             support.firePropertyChange("DeathEvent", initialHealth, this.health);
         }
-        else{
-            support.firePropertyChange("HealthEvent", initialHealth, this.health);
-        }
+        support.firePropertyChange("HealthEvent", initialHealth, this.health);
     }
 
     // Observe functionality
