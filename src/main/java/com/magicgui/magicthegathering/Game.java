@@ -26,8 +26,6 @@ public class Game {
      * @param fieldIndex Represents the location of the Player-field to which the card must be placed.
      * @return droppable, represents the state to which the card can either be dropped or not.
      */
-    //Updates player Field and Hand.
-    // Can be used for spell casting on enemy field.
     public boolean updatePlayerField(int handIndex, int fieldIndex) {
         return this.player.placeCard(handIndex, fieldIndex, this);
     }
