@@ -33,9 +33,13 @@ public class Player {
             deck.push(card);
         }
         //init hand to 5 cards.
+
+    }
+
+    public void createInitialHand(){
         for (int i = 0; i < 5; i++) {
             hand.set(i, deck.pop());
-            support.firePropertyChange("HandEvent", null, hand.get(i));
+            support.firePropertyChange("HandEvent", hand.get(i), i);
         }
     }
 

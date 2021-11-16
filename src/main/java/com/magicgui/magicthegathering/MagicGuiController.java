@@ -173,26 +173,30 @@ public class MagicGuiController {
         game.getPlayer().addPropertyChangeListener("HandEvent", PropertyChangeEvent -> {
             CardPane newVisualCard = createCardPane((Card) PropertyChangeEvent.getOldValue());
             PlayerHandGridPane.add(newVisualCard, (Integer) PropertyChangeEvent.getNewValue(), 0);
-            newVisualCard.damageCard();
         });
 
         game.getComputer().addPropertyChangeListener("FieldEvent", PropertyChangeEvent -> {
             StackPane newVisualCard = createCardPane((Card) PropertyChangeEvent.getOldValue());
             ComputerFieldGrid.add(newVisualCard, (Integer) PropertyChangeEvent.getNewValue(), 0);
-
         });
+
+        game.getPlayer().createInitialHand();
 
     }
 
     private CardPane createCardPane(Card currentCard) {
         CardPane cardPane = new CardPane(currentCard);
 
-
         cardPaneMap.put(String.valueOf(currentCard), cardPane);
         cardPane.setOnMouseEntered(mouseEvent -> PlayerCardDescriptionTextField.setText(currentCard.getDescription()));
         cardPane.setOnMouseExited(mouseEvent -> PlayerCardDescriptionTextField.setText(""));
-        currentCard.addPropertyChangeListener("DeadEvent", PropertyChangeEvent -> ((GridPane) cardPane.getParent()).getChildren().remove(cardPane));
-        currentCard.addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> cardPane.setCardHealthLabel(String.valueOf(PropertyChangeEvent.getNewValue())));
+        currentCard.addPropertyChangeListener("DeadEvent", PropertyChangeEvent -> {
+            ((GridPane) cardPane.getParent()).getChildren().remove(cardPane);
+        });
+        currentCard.addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> {
+            cardPane.setCardHealthLabel(String.valueOf(PropertyChangeEvent.getNewValue()));
+            if ((Integer) PropertyChangeEvent.getNewValue() < (Integer) PropertyChangeEvent.getOldValue()){cardPane.damageCard();}
+        });
 
         return cardPane;
     }
