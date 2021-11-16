@@ -1,41 +1,49 @@
 package com.magicgui.magicthegathering;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MagicGuiController {
     private static Map<String, CardPane> cardPaneMap;
-    @FXML private Button DeckButton;
-    @FXML private Button EndTurnButton;
-    @FXML private GridPane PlayerFieldGrid;
-    @FXML private GridPane ComputerFieldGrid;
-    @FXML private ProgressBar HealthProgressBar;
-    @FXML private Label HealthProgressBarLabel;
-    @FXML private ProgressBar ManaProgressBar;
-    @FXML private Label ManaProgressBarLabel;
-    @FXML private ProgressBar CPUHealthProgressBar;
-    @FXML private Label CPUHealthProgressBarLabel;
-    @FXML private ProgressBar CPUManaProgressBar;
-    @FXML private Label CPUManaProgressBarLabel;
-    @FXML private TextArea PlayerCardDescriptionTextField;
-    @FXML private GridPane PlayerHandGridPane;
+    @FXML
+    private Button DeckButton;
+    @FXML
+    private Button EndTurnButton;
+    @FXML
+    private GridPane PlayerFieldGrid;
+    @FXML
+    private GridPane ComputerFieldGrid;
+    @FXML
+    private ProgressBar HealthProgressBar;
+    @FXML
+    private Label HealthProgressBarLabel;
+    @FXML
+    private ProgressBar ManaProgressBar;
+    @FXML
+    private Label ManaProgressBarLabel;
+    @FXML
+    private ProgressBar CPUHealthProgressBar;
+    @FXML
+    private Label CPUHealthProgressBarLabel;
+    @FXML
+    private ProgressBar CPUManaProgressBar;
+    @FXML
+    private Label CPUManaProgressBarLabel;
+    @FXML
+    private TextArea PlayerCardDescriptionTextField;
+    @FXML
+    private GridPane PlayerHandGridPane;
 
     public void initialize() {
         Game game = new Game();
@@ -72,7 +80,7 @@ public class MagicGuiController {
             Node currentSpace = event.getPickResult().getIntersectedNode();
             Dragboard db = event.getDragboard();
 
-            if (db.hasString()){
+            if (db.hasString()) {
                 Integer cHandIndex = GridPane.getColumnIndex(cardPaneMap.get(db.getString()));
                 Integer cFieldIndex = GridPane.getColumnIndex(currentSpace);
                 int fieldLocation = cFieldIndex == null ? 0 : cFieldIndex;
@@ -80,7 +88,7 @@ public class MagicGuiController {
 
                 boolean droppable = game.updatePlayerField(handLocation, fieldLocation);
 
-                if (droppable){
+                if (droppable) {
                     PlayerHandGridPane.getChildren().remove(cardPaneMap.get(db.getString()));
                 }
             }
@@ -125,12 +133,11 @@ public class MagicGuiController {
         game.getComputer().addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> {
             int newHealth = (int) PropertyChangeEvent.getNewValue();
             int baseHealth = ((Player) PropertyChangeEvent.getSource()).getBaseHealth();
-            if (newHealth <= 0){
+            if (newHealth <= 0) {
                 PlayerCardDescriptionTextField.setText("CONGRATULATIONS YOU WON!!!");
                 CPUHealthProgressBar.setProgress((float) newHealth / baseHealth);
                 CPUHealthProgressBarLabel.setText(String.format("COMPUTER DOWN"));
-            }
-            else{
+            } else {
                 PlayerCardDescriptionTextField.setText("Play to win");
                 CPUHealthProgressBar.setProgress((float) newHealth / baseHealth);
                 CPUHealthProgressBarLabel.setText(String.format("Health: %d / %d", newHealth, baseHealth));
@@ -154,12 +161,11 @@ public class MagicGuiController {
         game.getPlayer().addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> {
             int newHealth = (int) PropertyChangeEvent.getNewValue();
             int baseHealth = ((Player) PropertyChangeEvent.getSource()).getBaseHealth();
-            if (newHealth <= 0){
+            if (newHealth <= 0) {
                 PlayerCardDescriptionTextField.setText("You lost this time");
                 HealthProgressBar.setProgress((float) newHealth / baseHealth);
                 HealthProgressBarLabel.setText(String.format("REST IN RIP"));
-            }
-            else{
+            } else {
                 PlayerCardDescriptionTextField.setText("Play to win");
                 HealthProgressBar.setProgress((float) newHealth / baseHealth);
                 HealthProgressBarLabel.setText(String.format("Health: %d / %d", newHealth, baseHealth));
@@ -195,7 +201,9 @@ public class MagicGuiController {
         });
         currentCard.addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> {
             cardPane.setCardHealthLabel(String.valueOf(PropertyChangeEvent.getNewValue()));
-            if ((Integer) PropertyChangeEvent.getNewValue() < (Integer) PropertyChangeEvent.getOldValue()){cardPane.damageCard();}
+            if ((Integer) PropertyChangeEvent.getNewValue() < (Integer) PropertyChangeEvent.getOldValue()) {
+                cardPane.damageCard();
+            }
         });
 
         return cardPane;

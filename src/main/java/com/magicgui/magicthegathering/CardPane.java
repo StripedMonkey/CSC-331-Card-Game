@@ -9,15 +9,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 
 import java.util.Objects;
-import java.util.Stack;
-import java.util.Timer;
-import java.util.concurrent.TimeUnit;
 
 public class CardPane extends StackPane {
     Label cardHealthLabel = new Label();
@@ -38,7 +34,7 @@ public class CardPane extends StackPane {
         String costString = String.valueOf(currentCard.getCost());
         this.formatLabel(this.cardCostLabel, costString, Pos.TOP_RIGHT);
 
-
+        this.setAlignment(Pos.CENTER);
         this.setId(String.valueOf(currentCard));
         this.getChildren().add(new ImageView(cardImage));
         this.getChildren().add(cardHealthLabel);
@@ -57,9 +53,17 @@ public class CardPane extends StackPane {
         });
     }
 
-    public void setCostLabel(String costString){cardCostLabel.setText(costString);}
-    public void setCardHealthLabel(String healthString){cardHealthLabel.setText(healthString);}
-    public void setCardAttackLabel(String attackString){cardAttackLabel.setText(attackString);}
+    public void setCostLabel(String costString) {
+        cardCostLabel.setText(costString);
+    }
+
+    public void setCardHealthLabel(String healthString) {
+        cardHealthLabel.setText(healthString);
+    }
+
+    public void setCardAttackLabel(String attackString) {
+        cardAttackLabel.setText(attackString);
+    }
 
 
     private void formatLabel(Label cardLabel, String value, Pos labelPosition) {
@@ -68,6 +72,7 @@ public class CardPane extends StackPane {
         cardLabel.setPadding(new Insets(10));
         StackPane.setAlignment(cardLabel, labelPosition);
     }
+
     public void damageCard() {
         PauseTransition delay = new PauseTransition(Duration.millis(450));
         ImageView damage = new ImageView(new Image(getClass().getResourceAsStream("Gif.gif"), 135, 180, false, false));
