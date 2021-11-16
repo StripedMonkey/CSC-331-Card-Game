@@ -1,15 +1,19 @@
 package com.magicgui.magicthegathering;
 
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -196,15 +200,23 @@ public class MagicGuiController {
         cardPaneMap.put(String.valueOf(currentCard), cardPane);
         cardPane.setOnMouseEntered(mouseEvent -> PlayerCardDescriptionTextField.setText(currentCard.getDescription()));
         cardPane.setOnMouseExited(mouseEvent -> PlayerCardDescriptionTextField.setText(""));
-        currentCard.addPropertyChangeListener("DeadEvent", PropertyChangeEvent -> {
-            ((GridPane) cardPane.getParent()).getChildren().remove(cardPane);
-        });
         currentCard.addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> {
             cardPane.setCardHealthLabel(String.valueOf(PropertyChangeEvent.getNewValue()));
             if ((Integer) PropertyChangeEvent.getNewValue() < (Integer) PropertyChangeEvent.getOldValue()) {
                 cardPane.damageCard();
             }
         });
+        currentCard.addPropertyChangeListener("DeadEvent", PropertyChangeEvent -> {
+            cardPane.damageCard();
+            PauseTransition delay = new PauseTransition(Duration.millis(450));
+            ImageView damage = new ImageView(new Image(getClass().getResourceAsStream("Gif.gif"), 135, 180, false, false));
+            cardPane.getChildren().add(damage);
+            delay.setOnFinished(e -> cardPane.getChildren().remove(damage));
+            delay.setOnFinished(e -> ((GridPane) cardPane.getParent()).getChildren().remove(cardPane));
+            delay.play();
+//            ((GridPane) cardPane.getParent()).getChildren().remove(cardPane);
+        });
+
 
         return cardPane;
     }

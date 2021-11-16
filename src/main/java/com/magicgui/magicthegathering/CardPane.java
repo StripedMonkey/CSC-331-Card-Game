@@ -1,5 +1,6 @@
 package com.magicgui.magicthegathering;
 
+import javafx.animation.Animation;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
