@@ -1,15 +1,18 @@
 package com.magicgui.magicthegathering;
 
 
-// Not complete...
-
+/**
+ * The game class is the driver code that drives the backend of the game.
+ */
 public class Game {
     private final Player player;
     private final Player computer;
     private final ComputerOpponent ai;
     private int currentTurn = 0;
 
-
+    /**
+     * The game constructor...
+     */
     public Game() {
         this.player = new Player(Card.buildDeckFromFolder("Path"));
         this.computer = new Player(Card.buildDeckFromFolder("Path"));
@@ -17,14 +20,22 @@ public class Game {
 
     }
 
+    /**
+     * Updates the Back end player field and hand.
+     * @param handIndex Represents the location of the hand to which the card is being taken from.
+     * @param fieldIndex Represents the location of the Player-field to which the card must be placed.
+     * @return droppable, represents the state to which the card can either be dropped or not.
+     */
     //Updates player Field and Hand.
     // Can be used for spell casting on enemy field.
     public boolean updatePlayerField(int handIndex, int fieldIndex) {
-        boolean droppable = this.player.placeCard(handIndex, fieldIndex, this);
-        return droppable;
+        return this.player.placeCard(handIndex, fieldIndex, this);
     }
 
-    // I.e. The end of both turns.
+    /**
+     * onEndTurn will invoke the necessary methods to perform an end turn.
+     * i.e. attacking, and any card effects that must be applied.
+     */
     public void onEndTurn() {
         /* Reset remaining cards. */
         currentTurn += 1;
@@ -42,6 +53,9 @@ public class Game {
         }
     }
 
+    /**
+     * Used for debugging.
+     */
     private void printBoard() {
         System.out.println("End round");
         System.out.println("Player Health " + player.getHealth());
@@ -65,6 +79,8 @@ public class Game {
         }
         System.out.println();
     }
+
+    //Accessors
 
     public Player getPlayer() {
         return player;
