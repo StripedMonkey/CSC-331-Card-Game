@@ -14,16 +14,14 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class MagicGuiController {
-    private static Map<String, Pane> cardPaneMap;
+    private static Map<String, CardPane> cardPaneMap;
     @FXML private Button DeckButton;
     @FXML private Button EndTurnButton;
     @FXML private GridPane PlayerFieldGrid;
@@ -170,75 +168,33 @@ public class MagicGuiController {
 
 
         game.getPlayer().addPropertyChangeListener("FieldEvent", PropertyChangeEvent -> {
-
         });
 
         game.getPlayer().addPropertyChangeListener("HandEvent", PropertyChangeEvent -> {
-            StackPane newVisualCard = createCardPane((Card) PropertyChangeEvent.getOldValue());
+            CardPane newVisualCard = createCardPane((Card) PropertyChangeEvent.getOldValue());
             PlayerHandGridPane.add(newVisualCard, (Integer) PropertyChangeEvent.getNewValue(), 0);
+            newVisualCard.damageCard();
         });
 
         game.getComputer().addPropertyChangeListener("FieldEvent", PropertyChangeEvent -> {
             StackPane newVisualCard = createCardPane((Card) PropertyChangeEvent.getOldValue());
             ComputerFieldGrid.add(newVisualCard, (Integer) PropertyChangeEvent.getNewValue(), 0);
+
         });
 
     }
 
-    private StackPane createCardPane(Card currentCard) {
-        StackPane cardPane = new StackPane();
-        cardPane.setMaxHeight(180);
-        cardPane.setMaxWidth(135);
-        Image cardImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(currentCard.getImagePath())), 135, 180, true, true);
-
-        Label cardHealthLabel = new Label();
-        String healthString = String.format("%s", currentCard.getHealth());
-        formatLabel(cardHealthLabel, healthString, Pos.BOTTOM_LEFT);
+    private CardPane createCardPane(Card currentCard) {
+        CardPane cardPane = new CardPane(currentCard);
 
 
-        Label cardAttackLabel = new Label();
-        String attackString = String.format("%s", currentCard.getAttack());
-        formatLabel(cardAttackLabel,attackString, Pos.BOTTOM_RIGHT);
-
-        Label cardCostLabel = new Label();
-        String costString = String.format("%s", currentCard.getCost());
-        formatLabel(cardCostLabel, costString, Pos.TOP_RIGHT);
-
-
-        cardPane.setId(String.valueOf(currentCard));
         cardPaneMap.put(String.valueOf(currentCard), cardPane);
-        cardPane.getChildren().add(new ImageView(cardImage));
-        cardPane.getChildren().add(cardHealthLabel);
-        cardPane.getChildren().add(cardCostLabel);
-        cardPane.getChildren().add(cardAttackLabel);
-
-
-        cardPane.setOnDragDetected(event -> {
-            Dragboard db = cardPane.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            content.putString(cardPane.getId());
-            db.setDragView(cardImage);
-            content.putImage(cardImage);
-
-            db.setContent(content);
-            event.consume();
-        });
-
         cardPane.setOnMouseEntered(mouseEvent -> PlayerCardDescriptionTextField.setText(currentCard.getDescription()));
         cardPane.setOnMouseExited(mouseEvent -> PlayerCardDescriptionTextField.setText(""));
-
         currentCard.addPropertyChangeListener("DeadEvent", PropertyChangeEvent -> ((GridPane) cardPane.getParent()).getChildren().remove(cardPane));
-        currentCard.addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> cardHealthLabel.setText(String.valueOf(PropertyChangeEvent.getNewValue())));
-
+        currentCard.addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> cardPane.setCardHealthLabel(String.valueOf(PropertyChangeEvent.getNewValue())));
 
         return cardPane;
-    }
-
-    private void formatLabel(Label cardLabel, String value, Pos labelPosition) {
-        cardLabel.setText(value);
-        cardLabel.setTextFill(Paint.valueOf("white"));
-        cardLabel.setPadding(new Insets(10));
-        StackPane.setAlignment(cardLabel, labelPosition);
     }
 
 }
