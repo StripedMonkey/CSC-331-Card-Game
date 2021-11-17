@@ -37,6 +37,7 @@ public class DeckBuilder {
         String[] imagePaths = {
                 "Effect_Bleed.png",
                 "Effect_Poison.png",
+                "Effect_Incinerate.png"
         };
         String imagePath;
         List<Effect> effects = new ArrayList<Effect>();
@@ -49,7 +50,7 @@ public class DeckBuilder {
             imagePath = "Last_Stand.png";
         }
 
-        return new Card(0, 0, 3, effects, "Spell Card", "Effect_Bleed.png", true);
+        return new Card(0, 0, 3, effects, "Spell Card", imagePath, true);
     }
 
     /**
