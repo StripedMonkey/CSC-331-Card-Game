@@ -6,7 +6,10 @@ import java.io.File;
 import java.util.List;
 
 /**
- * TODO: document me
+ * Card class that contains all the information about a card
+ * As well as the actions that a card can perform. This class
+ * does not contain any frontend information outside of the
+ * imagePath and description
  */
 public class Card {
     PropertyChangeSupport eventHelper;
@@ -21,8 +24,16 @@ public class Card {
     private int health = baseHealth;
     private int cost;
 
+
     /**
-     * TODO: document me
+     * Cards have attack, health, and cost associated with them.
+     * @param attack damage a card does
+     * @param health number of hit points
+     * @param cost the mana cost of a card
+     * @param effects a list of effects that start on a card
+     * @param description the description of a card
+     * @param imagePath the image to display on a card
+     * @param isSpellCard if a card is a spell card or not
      */
     Card(int attack, int health, int cost, List<Effect> effects, String description, String imagePath, boolean isSpellCard) {
         this.attack = attack;
@@ -37,50 +48,51 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
-     * @param folder
-     * @return
+     * Generates a deck
+     * @param folder Unused
+     * @return A list of cards
      */
     static List<Card> buildDeckFromFolder(File folder, boolean genSpells) {
         return DeckBuilder.buildDeck(52, genSpells);
     }
 
     /**
-     * TODO: Document me
-     * @param folder
-     * @return
+     * Wrapper that allows you to pass a string instead of a File
+     * Unused parameters
+     * @param folder Unused
+     * @return A List of Cards
      */
     static List<Card> buildDeckFromFolder(String folder, boolean genSpells) {
         return buildDeckFromFolder(new File(folder), genSpells);
     }
 
     /**
-     * TODO: Document me
-     * @return
+     * Whether or not a card is a spell card.
+     * @return a t/f value
      */
     public boolean isSpellCard() {
         return isSpellCard;
     }
 
     /**
-     * TODO: Document me
-     * @param spellCard
+     * Setter for whether a card is a spell card
+     * @param spellCard boolean whether a card is a spell card
      */
     public void setSpellCard(boolean spellCard) {
         isSpellCard = spellCard;
     }
 
     /**
-     * TODO: Document me
-     * @return
+     * returns the attack value of the card
+     * @return integer attack value
      */
     public int getAttack() {
         return attack;
     }
 
     /**
-     * TODO: Document me
-     * @param attack
+     * Sets the attack value of the card
+     * @param attack amount of damage a card does
      */
     public void setAttack(int attack) {
         int oldAttack = this.attack;
@@ -89,23 +101,25 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
-     * @return
+     * The base health of a card is the initial health of a card
+     * @return the base health
      */
     public int getBaseHealth() {
         return this.baseHealth;
     }
 
     /**
-     * TODO: Document me
-     * @return
+     * Returns the current health of the card
+     * @return the current health as an integer
      */
     public int getHealth() {
         return health;
     }
 
     /**
-     * TODO: Document me
+     * Sets the health of the card
+     * Also does death checks, and allows for the Last Stand
+     * effect to save a card from death as a second chance.
      * @param health
      */
     public void setHealth(int health) {
@@ -129,16 +143,16 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
-     * @return
+     * The mana cost of a card
+     * @return The cost of a card
      */
     public int getCost() {
         return cost;
     }
 
     /**
-     * TODO: Document me
-     * @param cost
+     * Sets the mana cost of a card
+     * @param cost new cost of the card
      */
     public void setCost(int cost) {
         int oldCost = this.health;
@@ -147,7 +161,8 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
+     * returns the player that owns a particular card
+     * currently unused
      * @return
      */
     public Player getOwnerPlayer() {
@@ -155,7 +170,7 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
+     * Currently unused, but allows for the owner of a card to be set.
      * @param ownerPlayer
      */
     public void setOwnerPlayer(Player ownerPlayer) {
@@ -163,7 +178,7 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
+     * sets whether a card has died
      * @param isDead
      */
     public void setDead(boolean isDead) {
@@ -176,7 +191,7 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
+     * Gets the description string of a card
      * @return
      */
     public String getDescription() {
@@ -184,7 +199,7 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
+     * Sets the description string of a card
      * @param description
      */
     public void setDescription(String description) {
@@ -192,7 +207,7 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
+     * Returns the resource path of the card image
      * @return
      */
     String getImagePath() {
@@ -200,7 +215,7 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
+     * Sets the resource path of the image of the card
      * @param imagePath
      */
     public void setImagePath(String imagePath) {
@@ -208,7 +223,7 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
+     * removes an effect from a card
      * @param effect
      */
     void removeEffect(Effect effect) {
@@ -216,7 +231,7 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
+     * adds an effect to a card
      * @param effect
      */
     void addEffect(Effect effect) {
@@ -224,7 +239,8 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
+     * Plays a card from the player's hand
+     * Acts as an interface for any spells that are run
      * @param targetPlayer
      * @param targetCard
      * @param castingPlayer
@@ -236,7 +252,8 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
+     * The effects have an opportunity to do something at the end of a turn.
+     * This function is to be called when a turn is ended.
      */
     void endTurn() {
         for (Effect effect : effects) {
@@ -246,8 +263,8 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
-     * @param damage
+     * Deals damage to the card
+     * @param damage amount of damage to deal to a card
      */
     public void damage(int damage) {
         System.out.println("Damaging card by " + damage);
@@ -255,27 +272,27 @@ public class Card {
     }
 
     /**
-     * TODO: Document me
-     * @param health
+     * Increases the health of a card
+     * @param health amount of health to regenerate
      */
     public void heal(int health) {
         setHealth(getHealth() + health);
     }
 
     /**
-     * TODO: Document me
-     * @param propertyName
-     * @param pcl
+     * Adds a PropertyChangeListener to a card. Allows functions to be called when events are fired.
+     * Currently there are 4 Events which can fire:
+     * * AttackEvent
+     * * HealthEvent
+     * * CostEvent
+     * * DeadEvent
+     * @param propertyName The name of an event
+     * @param pcl The listener object which activates when an event is fired
      */
     public void addPropertyChangeListener(String propertyName, PropertyChangeListener pcl) {
         eventHelper.addPropertyChangeListener(propertyName, pcl);
     }
 
-    /**
-     * TODO: Document me
-     * @param propertyName
-     * @param pcl
-     */
     public void removePropertyChangeListener(String propertyName, PropertyChangeListener pcl) {
         eventHelper.removePropertyChangeListener(propertyName, pcl);
     }
