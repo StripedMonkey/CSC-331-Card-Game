@@ -24,6 +24,10 @@ public class DeckBuilder {
     }
 
     static Card generateCreatureCard() {
+        String[] imagePaths = {
+                "Creature_Travellers.png",
+                "Creature_Crazy_Axeman.png",
+        };
         Random generator = new Random();
         int attack = generator.nextInt(0, 4);
         int health = generator.nextInt(1, 5 - attack);
@@ -31,8 +35,9 @@ public class DeckBuilder {
 
         Effect effect = generateRandomEffect();
         List<Effect> effects = new ArrayList<>();
-        String imagePath = "Creature_Travellers.png";
 
+
+        String imagePath = imagePaths[generator.nextInt(0, imagePaths.length)];
         return new Card(attack, health, cost, effects, "Beautiful default description", imagePath, false);
 
     }
