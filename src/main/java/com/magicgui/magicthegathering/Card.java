@@ -129,8 +129,9 @@ public class Card {
         eventHelper.firePropertyChange("HealthEvent", oldHealth, this.health);
 
         if (this.health <= 0) {
+            List<Effect> tempEffects = new ArrayList<>(effects);
             for (Effect effect :
-                    effects) {
+                    tempEffects) {
                 if (effect instanceof LastStandEffect) {
                     removeEffect(effect);
                     this.health = 1;
