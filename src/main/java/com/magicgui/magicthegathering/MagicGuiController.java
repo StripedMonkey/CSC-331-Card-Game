@@ -14,7 +14,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,15 +38,13 @@ public class MagicGuiController {
         Game game = new Game();
         cardPaneMap = new HashMap<>();
 
-
+        // Setting up health and mana bars
         HealthProgressBar.setStyle("-fx-accent: red");
         CPUHealthProgressBar.setStyle("-fx-accent: red");
-
         HealthProgressBarLabel.setText(String.format("Health: %d / %d", game.getPlayer().getBaseHealth(), game.getPlayer().getBaseHealth()));
         ManaProgressBarLabel.setText(String.format("Mana: %d / %d", game.getComputer().getMaxMana(), game.getComputer().getMaxMana()));
         CPUHealthProgressBarLabel.setText(String.format("Health: %d / %d", game.getComputer().getBaseHealth(), game.getComputer().getBaseHealth()));
         CPUManaProgressBarLabel.setText(String.format("Mana: %d / %d", game.getComputer().getMaxMana(), game.getComputer().getMaxMana()));
-
         HealthProgressBar.setProgress(1);
         ManaProgressBar.setProgress(1);
         CPUHealthProgressBar.setProgress(1);
@@ -59,13 +56,13 @@ public class MagicGuiController {
         // End turn button Event
         EndTurnButton.pressedProperty().addListener((observableValue, aBoolean, t1) -> {if (aBoolean) {game.onEndTurn();}});
 
-
+        // Drag and Drop into computer field
         ComputerFieldGrid.setOnDragDropped(event -> {
             Node currentSpace = event.getPickResult().getIntersectedNode();
             Dragboard db = event.getDragboard();
             if (currentSpace.getParent() instanceof CardPane){currentSpace = currentSpace.getParent();}
 
-            if (db.hasString()) {
+            if (db.hasString()) { // Sending drog index to backend
                 Integer cHandIndex = GridPane.getColumnIndex(cardPaneMap.get(db.getString()));
                 Integer cFieldIndex = GridPane.getColumnIndex(currentSpace);
                 int fieldLocation = cFieldIndex == null ? 0 : cFieldIndex;
@@ -74,8 +71,6 @@ public class MagicGuiController {
                 if (game.updatePlayerField(handLocation, fieldLocation, 1)) {
                     PlayerHandGridPane.getChildren().remove(cardPaneMap.get(db.getString()));}
             }});
-
-
         ComputerFieldGrid.setOnDragOver(event -> {
             if (event.getGestureSource() != PlayerFieldGrid
                     && event.getDragboard().hasString()) {
@@ -83,15 +78,16 @@ public class MagicGuiController {
             }
             event.consume();
         });
+        // End computer drag and drop initiation
 
-
+        // Drag and rop into player field
         PlayerFieldGrid.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
             Node currentSpace = event.getPickResult().getIntersectedNode();
-
             if (currentSpace.getParent() instanceof CardPane){currentSpace = currentSpace.getParent();}
 
+            // sending index to backend when dropped in pane
             if (db.hasString()) {
                 Integer cHandIndex = GridPane.getColumnIndex(cardPaneMap.get(db.getString()));
                 Integer cFieldIndex = GridPane.getColumnIndex(currentSpace);
@@ -108,8 +104,6 @@ public class MagicGuiController {
             event.setDropCompleted(success);
             event.consume();
         });
-
-
         PlayerFieldGrid.setOnDragOver(event -> {
             if (event.getGestureSource() != PlayerFieldGrid
                     && event.getDragboard().hasString()) {
@@ -117,8 +111,9 @@ public class MagicGuiController {
             }
             event.consume();
         });
+        // end playerField drag and drop code
 
-
+        // Property listeners for changing computer health and ending game
         game.getComputer().addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> {
             int newHealth = (int) PropertyChangeEvent.getNewValue();
             int baseHealth = ((Player) PropertyChangeEvent.getSource()).getBaseHealth();
@@ -134,7 +129,7 @@ public class MagicGuiController {
             }
         });
 
-
+        // Property listener for changing computer mana
         game.getComputer().addPropertyChangeListener("ManaEvent", PropertyChangeEvent -> {
             int maxMana = ((Player) PropertyChangeEvent.getSource()).getMaxMana();
             int newMana = (int) PropertyChangeEvent.getNewValue();
@@ -142,7 +137,7 @@ public class MagicGuiController {
             CPUManaProgressBarLabel.setText(String.format("Mana: %d / %d", newMana, maxMana));
         });
 
-
+        // Property listener for changing Player mana
         game.getPlayer().addPropertyChangeListener("ManaEvent", PropertyChangeEvent -> {
             int maxMana = ((Player) PropertyChangeEvent.getSource()).getMaxMana();
             int newMana = (int) PropertyChangeEvent.getNewValue();
@@ -150,7 +145,7 @@ public class MagicGuiController {
             ManaProgressBarLabel.setText(String.format("Mana: %d / %d", newMana, maxMana));
         });
 
-
+        // Property listener for changing player health and checking for game end
         game.getPlayer().addPropertyChangeListener("HealthEvent", PropertyChangeEvent -> {
             int newHealth = (int) PropertyChangeEvent.getNewValue();
             int baseHealth = ((Player) PropertyChangeEvent.getSource()).getBaseHealth();
@@ -166,14 +161,13 @@ public class MagicGuiController {
             }
         });
 
-        game.getPlayer().addPropertyChangeListener("FieldEvent", PropertyChangeEvent -> {
-        });
-
+        // Property listener for updating player hand
         game.getPlayer().addPropertyChangeListener("HandEvent", PropertyChangeEvent -> {
             CardPane newVisualCard = createCardPane((Card) PropertyChangeEvent.getOldValue());
             PlayerHandGridPane.add(newVisualCard, (Integer) PropertyChangeEvent.getNewValue(), 0);
         });
 
+        // property listener for updating computer field
         game.getComputer().addPropertyChangeListener("FieldEvent", PropertyChangeEvent -> {
             CardPane newVisualCard = createCardPane((Card) PropertyChangeEvent.getOldValue());
             ComputerFieldGrid.add(newVisualCard, (Integer) PropertyChangeEvent.getNewValue(), 0);
@@ -217,6 +211,9 @@ public class MagicGuiController {
     }
 
     public void endGame(){
+        /*
+        Disables buttons when game ends
+         */
         DeckButton.setVisible(false);
         EndTurnButton.setVisible(false);
     }

@@ -1,6 +1,5 @@
 package com.magicgui.magicthegathering;
 
-import javafx.animation.Animation;
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,6 +23,9 @@ public class CardPane extends StackPane {
     Card card;
 
     public CardPane(Card currentCard) {
+        /**
+         * @param currentCard
+        */
         card = currentCard;
         this.setMaxHeight(180);
         this.setMaxWidth(135);
