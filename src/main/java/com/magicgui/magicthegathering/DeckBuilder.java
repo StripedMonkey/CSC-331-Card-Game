@@ -21,8 +21,14 @@ public class DeckBuilder {
 
     static Card generateSpellCard() {
         List<Effect> effects = new ArrayList<Effect>();
-        effects.add(new AcidEffect(3));
-        return new Card(0,0,3,effects,"Spell Card","EffectPoison.png",true);
+        Random generator = new Random();
+        if (generator.nextBoolean()) {
+            effects.add(new AcidEffect(3));
+        } else {
+            effects.add(new LastStandEffect());
+        }
+
+        return new Card(0, 0, 3, effects, "Spell Card", "", true);
     }
 
     static Card generateCreatureCard() {
