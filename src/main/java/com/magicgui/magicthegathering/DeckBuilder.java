@@ -24,9 +24,10 @@ public class DeckBuilder {
         Random generator = new Random();
         if (generator.nextBoolean()) {
             effects.add(new AcidEffect(3));
-        } else {
-            effects.add(new LastStandEffect());
         }
+//        else {
+//            effects.add(new LastStandEffect());
+//        }
 
         return new Card(0, 0, 3, effects, "Spell Card", "Effect_Bleed.png", true);
     }
