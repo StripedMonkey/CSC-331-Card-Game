@@ -90,7 +90,7 @@ public class Player {
      * @param handIndex  : Represents the index value of hand loc.
      * @param fieldIndex : Represents the index value of playField loc.
      */
-    public boolean placeCard(int handIndex, int fieldIndex, Game game, int attacker) {
+    public boolean placeCard(int handIndex, int fieldIndex, Game game, int target) {
         drawType cardType = buyCard(handIndex);
         //buyCard check will update mana.
         boolean dropped = false;
@@ -98,7 +98,6 @@ public class Player {
             playField[fieldIndex] = hand.get(handIndex);
             support.firePropertyChange("FieldEvent", hand.get(handIndex), fieldIndex);
             playField[fieldIndex].addPropertyChangeListener("DeadEvent", evt -> playField[fieldIndex] = null);
-            Card toRemove = hand.get(handIndex);
             hand.set(handIndex, null);
             //debug
             System.out.println(this.getPlayField());
@@ -107,17 +106,18 @@ public class Player {
             dropped = true;
         }
         if (cardType.equals(drawType.SPELL)){
-            if (attacker == 0) { // player
-                System.out.println("Casting spell card player\n printing card: ");
-                System.out.println(game.getComputer().getPlayFieldCard(fieldIndex));
-                System.out.printf("%s %d%n", "Field target index:", fieldIndex);
+            // --- Debug
+            System.out.println("Casting spell card player\n printing card: ");
+            System.out.println(game.getComputer().getPlayFieldCard(fieldIndex));
+            System.out.printf("%s %d%n", "Field target index:", fieldIndex);
+            // -----
+            if (target == 0){ //drop on playerField
+                hand.get(handIndex).cast(game.getComputer(), game.getPlayer().getPlayFieldCard(fieldIndex), game.getPlayer());
+            }
+            else { //Drop on enemyField
                 hand.get(handIndex).cast(game.getComputer(), game.getComputer().getPlayFieldCard(fieldIndex), game.getPlayer());
             }
-            else { // Computer
-                System.out.println("Casting spell card Computer");
-                hand.get(handIndex).cast(game.getPlayer(), game.getPlayer().getPlayFieldCard(fieldIndex), game.getComputer());
-
-            }
+            hand.set(handIndex, null);
             dropped = true;
         }
         return dropped;

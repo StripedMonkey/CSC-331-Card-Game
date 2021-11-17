@@ -24,10 +24,11 @@ public class Game {
      * Updates the Back end player field and hand.
      * @param handIndex Represents the location of the hand to which the card is being taken from.
      * @param fieldIndex Represents the location of the Player-field to which the card must be placed.
+     * @param target Represents the target location of the field. 0 -> player, 1 -> enemy.
      * @return droppable, represents the state to which the card can either be dropped or not.
      */
-    public boolean updatePlayerField(int handIndex, int fieldIndex) {
-        return this.player.placeCard(handIndex, fieldIndex, this, 0);
+    public boolean updatePlayerField(int handIndex, int fieldIndex, int target) {
+        return this.player.placeCard(handIndex, fieldIndex, this, target);
     }
 
     /**

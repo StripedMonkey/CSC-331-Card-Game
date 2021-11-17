@@ -71,7 +71,7 @@ public class MagicGuiController {
                 int fieldLocation = cFieldIndex == null ? 0 : cFieldIndex;
                 int handLocation = cHandIndex == null ? 0 : cHandIndex;
 
-                if (game.updatePlayerField(handLocation, fieldLocation)) {
+                if (game.updatePlayerField(handLocation, fieldLocation, 1)) {
                     PlayerHandGridPane.getChildren().remove(cardPaneMap.get(db.getString()));}
             }});
 
@@ -98,7 +98,7 @@ public class MagicGuiController {
                 int fieldLocation = cFieldIndex == null ? 0 : cFieldIndex;
                 int handLocation = cHandIndex == null ? 0 : cHandIndex;
 
-                if (game.updatePlayerField(handLocation, fieldLocation)) {
+                if (game.updatePlayerField(handLocation, fieldLocation, 0)) {
                     if (!cardPaneMap.get(db.getString()).getCard().isSpellCard()) {
                         PlayerFieldGrid.add(cardPaneMap.get(db.getString()), fieldLocation, 0);
                     }
