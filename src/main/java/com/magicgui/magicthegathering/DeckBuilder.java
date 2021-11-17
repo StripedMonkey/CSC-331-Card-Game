@@ -6,13 +6,13 @@ import java.util.Random;
 
 public class DeckBuilder {
 
-    static List<Card> buildDeck(int numCards) {
+    static List<Card> buildDeck(int numCards, boolean genSpells) {
         Random generator = new Random();
         List<Card> deck = new ArrayList<>();
         for (int i = 0; i < numCards; i++) {
             if (generator.nextBoolean()) {
                 deck.add(generateCreatureCard());
-            } else {
+            } else if (genSpells) {
                 deck.add(generateSpellCard());
             }
         }

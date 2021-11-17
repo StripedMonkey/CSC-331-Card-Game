@@ -14,8 +14,8 @@ public class Game {
      * The game constructor...
      */
     public Game() {
-        this.player = new Player(Card.buildDeckFromFolder("Path"));
-        this.computer = new Player(Card.buildDeckFromFolder("Path"));
+        this.player = new Player(Card.buildDeckFromFolder("Path", true));
+        this.computer = new Player(Card.buildDeckFromFolder("Path", false));
         this.ai = new ComputerOpponent(computer);
 
     }
