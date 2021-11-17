@@ -28,7 +28,7 @@ public class DeckBuilder {
             effects.add(new LastStandEffect());
         }
 
-        return new Card(0, 0, 3, effects, "Spell Card", "", true);
+        return new Card(0, 0, 3, effects, "Spell Card", "Effect_Bleed.png", true);
     }
 
     static Card generateCreatureCard() {
