@@ -32,10 +32,12 @@ public class Player {
         for (Card card : cardDeck) {
             deck.push(card);
         }
-        //init hand to 5 cards.
 
     }
 
+    /**
+     * Creates the initial hand of cards.
+     */
     public void createInitialHand(){
         for (int i = 0; i < 5; i++) {
             hand.set(i, deck.pop());
