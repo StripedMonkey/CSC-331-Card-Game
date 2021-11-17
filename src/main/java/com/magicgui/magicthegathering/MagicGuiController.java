@@ -72,6 +72,9 @@ public class MagicGuiController {
 
                 if (game.updatePlayerField(handLocation, fieldLocation)) {
                     PlayerHandGridPane.getChildren().remove(cardPaneMap.get(db.getString()));}
+                else{
+                    PlayerHandGridPane.getChildren().add(cardPaneMap.get(db.getString()));
+                }
             }});
 
 
