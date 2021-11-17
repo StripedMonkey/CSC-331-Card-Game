@@ -2,6 +2,7 @@ package com.magicgui.magicthegathering;
 
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -38,6 +39,7 @@ public class MagicGuiController {
     public void initialize() {
         Game game = new Game();
         cardPaneMap = new HashMap<>();
+
 
         HealthProgressBar.setStyle("-fx-accent: red");
         CPUHealthProgressBar.setStyle("-fx-accent: red");
@@ -180,6 +182,7 @@ public class MagicGuiController {
         Adds required listeners for game objects
          */
         CardPane cardPane = new CardPane(currentCard);
+        GridPane.setHalignment(cardPane, HPos.CENTER);
         cardPaneMap.put(String.valueOf(currentCard), cardPane);
 
         // Drag detecting and handling
