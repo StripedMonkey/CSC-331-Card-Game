@@ -70,6 +70,9 @@ public class Player {
         //Index will always conform to index boundary.
         if (this.mana >= hand.get(handIndex).getCost()) {
             if (hand.get(handIndex).isSpellCard()) {
+                int initialMana = this.mana;
+                this.mana -= hand.get(handIndex).getCost();
+                support.firePropertyChange("ManaEvent", initialMana, this.mana);
                 return drawType.SPELL;
             } else {
                 int initialMana = this.mana;
