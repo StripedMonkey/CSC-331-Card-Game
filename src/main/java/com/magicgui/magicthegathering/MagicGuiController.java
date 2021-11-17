@@ -203,6 +203,7 @@ public class MagicGuiController {
 
         // Adding listener for when card dies
         currentCard.addPropertyChangeListener("DeadEvent", PropertyChangeEvent -> {
+            //Plays the animation and then removes the cardpane
             PauseTransition delay = new PauseTransition(Duration.millis(450));
             ImageView damage = new ImageView(new Image(getClass().getResourceAsStream("Gif.gif"), 135, 180, false, false));
             cardPane.getChildren().add(damage);
