@@ -231,6 +231,7 @@ public class Card {
      */
     void cast(Player targetPlayer, Card targetCard, Player castingPlayer) {
         for (Effect effect : effects) {
+            System.out.println(effect);
             effect.cast(targetPlayer, targetCard, this, castingPlayer);
         }
     }

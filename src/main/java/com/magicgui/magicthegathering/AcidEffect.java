@@ -8,12 +8,18 @@ class AcidEffect implements Effect {
     }
 
     public void cast(Player targetPlayer, Card targetCard, Card castingCard, Player enemyPlayer) {
-        targetCard.addEffect(this);
+        if (targetCard != null){
+            System.out.println("Acid effect being casted.");
+            targetCard.addEffect(this);
+        }
+        System.out.println("target is null");
     }
 
     public void endTurn(Card castingCard) {
+        System.out.println("endTurn called | Acid");
         duration -= 1;
         if (duration > 0) {
+            System.out.println("damage.");
             castingCard.damage(1);
         } else {
             castingCard.removeEffect(this);

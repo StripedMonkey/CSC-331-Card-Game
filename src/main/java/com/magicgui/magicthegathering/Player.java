@@ -105,9 +105,13 @@ public class Player {
         }
         if (cardType.equals(drawType.SPELL)){
             if (attacker == 0) { // player
+                System.out.println("Casting spell card player\n printing card: ");
+                System.out.println(game.getComputer().getPlayFieldCard(fieldIndex));
+                System.out.println(fieldIndex);
                 hand.get(handIndex).cast(game.getComputer(), game.getComputer().getPlayFieldCard(fieldIndex), game.getPlayer());
             }
             else { // Computer
+                System.out.println("Casting spell card Computer");
                 hand.get(handIndex).cast(game.getPlayer(), game.getPlayer().getPlayFieldCard(fieldIndex), game.getComputer());
 
             }
