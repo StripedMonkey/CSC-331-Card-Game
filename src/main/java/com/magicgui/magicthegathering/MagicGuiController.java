@@ -70,13 +70,9 @@ public class MagicGuiController {
                 Integer cFieldIndex = GridPane.getColumnIndex(currentSpace);
                 int fieldLocation = cFieldIndex == null ? 0 : cFieldIndex;
                 int handLocation = cHandIndex == null ? 0 : cHandIndex;
-                System.out.println(fieldLocation);
 
                 if (game.updatePlayerField(handLocation, fieldLocation)) {
                     PlayerHandGridPane.getChildren().remove(cardPaneMap.get(db.getString()));}
-                else{
-                    PlayerHandGridPane.getChildren().add(cardPaneMap.get(db.getString()));
-                }
             }});
 
 
@@ -94,6 +90,8 @@ public class MagicGuiController {
             boolean success = false;
             Node currentSpace = event.getPickResult().getIntersectedNode();
 
+            if (currentSpace.getParent() instanceof CardPane){currentSpace = currentSpace.getParent();}
+
             if (db.hasString()) {
                 Integer cHandIndex = GridPane.getColumnIndex(cardPaneMap.get(db.getString()));
                 Integer cFieldIndex = GridPane.getColumnIndex(currentSpace);
@@ -101,7 +99,9 @@ public class MagicGuiController {
                 int handLocation = cHandIndex == null ? 0 : cHandIndex;
 
                 if (game.updatePlayerField(handLocation, fieldLocation)) {
-                    PlayerFieldGrid.add(cardPaneMap.get(db.getString()), fieldLocation, 0);
+                    if (!cardPaneMap.get(db.getString()).getCard().isSpellCard()) {
+                        PlayerFieldGrid.add(cardPaneMap.get(db.getString()), fieldLocation, 0);
+                    }
                     success = true;
                 }}
             event.setDropCompleted(success);

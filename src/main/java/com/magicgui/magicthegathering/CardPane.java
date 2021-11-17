@@ -21,8 +21,10 @@ public class CardPane extends StackPane {
     Label cardAttackLabel = new Label();
     Label cardCostLabel = new Label();
     Image cardImage;
+    Card card;
 
     public CardPane(Card currentCard) {
+        card = currentCard;
         this.setMaxHeight(180);
         this.setMaxWidth(135);
         cardImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(currentCard.getImagePath())), 135, 180, true, true);
@@ -54,17 +56,13 @@ public class CardPane extends StackPane {
         });
     }
 
-    public void setCostLabel(String costString) {
-        cardCostLabel.setText(costString);
-    }
+    public void setCostLabel(String costString) {cardCostLabel.setText(costString);}
 
-    public void setCardHealthLabel(String healthString) {
-        cardHealthLabel.setText(healthString);
-    }
+    public void setCardHealthLabel(String healthString) {cardHealthLabel.setText(healthString);}
 
-    public void setCardAttackLabel(String attackString) {
-        cardAttackLabel.setText(attackString);
-    }
+    public void setCardAttackLabel(String attackString) {cardAttackLabel.setText(attackString);}
+
+    public Card getCard(){return card;}
 
 
     private void formatLabel(Label cardLabel, String value, Pos labelPosition) {
