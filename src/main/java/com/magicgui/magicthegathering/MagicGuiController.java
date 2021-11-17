@@ -13,7 +13,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 import java.util.HashMap;
@@ -121,6 +120,7 @@ public class MagicGuiController {
                 PlayerCardDescriptionTextField.setText("CONGRATULATIONS YOU WON!!!");
                 CPUHealthProgressBar.setProgress((float) newHealth / baseHealth);
                 CPUHealthProgressBarLabel.setText(String.format("COMPUTER DOWN"));
+                endGame();
             } else {
                 PlayerCardDescriptionTextField.setText("Play to win");
                 CPUHealthProgressBar.setProgress((float) newHealth / baseHealth);
@@ -152,6 +152,7 @@ public class MagicGuiController {
                 PlayerCardDescriptionTextField.setText("You lost this time");
                 HealthProgressBar.setProgress((float) newHealth / baseHealth);
                 HealthProgressBarLabel.setText(String.format("REST IN RIP"));
+                endGame();
             } else {
                 PlayerCardDescriptionTextField.setText("Play to win");
                 HealthProgressBar.setProgress((float) newHealth / baseHealth);
@@ -206,5 +207,10 @@ public class MagicGuiController {
         });
 
         return cardPane;
+    }
+
+    public void endGame(){
+        DeckButton.setVisible(false);
+        EndTurnButton.setVisible(false);
     }
 }

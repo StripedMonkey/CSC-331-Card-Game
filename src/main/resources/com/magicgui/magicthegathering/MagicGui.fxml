@@ -36,9 +36,9 @@
                     </rowConstraints>
                      <children>
                         <ProgressBar fx:id="CPUHealthProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                        <Label fx:id="CPUHealthProgressBarLabel" text="Health" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Label fx:id="CPUHealthProgressBarLabel" focusTraversable="false" text="Health" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                         <ProgressBar fx:id="CPUManaProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.rowIndex="1" />
-                        <Label fx:id="CPUManaProgressBarLabel" text="Mana" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Label fx:id="CPUManaProgressBarLabel" focusTraversable="false" text="Mana" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
@@ -121,8 +121,8 @@
                      <children>
                         <ProgressBar fx:id="HealthProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" progress="0.0" />
                         <ProgressBar fx:id="ManaProgressBar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" progress="0.0" GridPane.rowIndex="1" />
-                        <Label fx:id="ManaProgressBarLabel" text="Mana" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                        <Label fx:id="HealthProgressBarLabel" text="Health" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Label fx:id="ManaProgressBarLabel" focusTraversable="false" text="Mana" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <Label fx:id="HealthProgressBarLabel" focusTraversable="false" text="Health" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                      </children>
                   </GridPane>
                   <GridPane GridPane.columnIndex="1">
@@ -135,7 +135,7 @@
                     </rowConstraints>
                      <children>
                         <Button fx:id="EndTurnButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="End Turn" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-                        <TextArea fx:id="PlayerCardDescriptionTextField" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                        <TextArea fx:id="PlayerCardDescriptionTextField" editable="false" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
