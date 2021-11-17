@@ -32,7 +32,6 @@ public class Player {
         for (Card card : cardDeck) {
             deck.push(card);
         }
-
     }
 
     /**

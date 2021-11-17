@@ -102,6 +102,7 @@ public class MagicGuiController {
                     if (!cardPaneMap.get(db.getString()).getCard().isSpellCard()) {
                         PlayerFieldGrid.add(cardPaneMap.get(db.getString()), fieldLocation, 0);
                     }
+                    PlayerHandGridPane.getChildren().remove(cardPaneMap.get(db.getString()));
                     success = true;
                 }}
             event.setDropCompleted(success);
