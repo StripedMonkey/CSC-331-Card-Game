@@ -107,7 +107,7 @@ public class Player {
             if (attacker == 0) { // player
                 System.out.println("Casting spell card player\n printing card: ");
                 System.out.println(game.getComputer().getPlayFieldCard(fieldIndex));
-                System.out.println(fieldIndex);
+                System.out.printf("%s %d%n", "Field target index:", fieldIndex);
                 hand.get(handIndex).cast(game.getComputer(), game.getComputer().getPlayFieldCard(fieldIndex), game.getPlayer());
             }
             else { // Computer

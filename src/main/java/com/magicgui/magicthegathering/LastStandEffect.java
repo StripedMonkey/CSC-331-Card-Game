@@ -5,5 +5,8 @@ class LastStandEffect implements Effect {
         if (targetCard != null){
             targetCard.addEffect(this);
         }
+        else {
+            System.out.println("target is null");
+        }
     }
 }

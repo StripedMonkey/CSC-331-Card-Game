@@ -12,7 +12,9 @@ class AcidEffect implements Effect {
             System.out.println("Acid effect being casted.");
             targetCard.addEffect(this);
         }
-        System.out.println("target is null");
+        else {
+            System.out.println("target is null");
+        }
     }
 
     public void endTurn(Card castingCard) {
