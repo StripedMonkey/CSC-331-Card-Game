@@ -3,6 +3,7 @@ package com.magicgui.magicthegathering;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -256,7 +257,8 @@ public class Card {
      * This function is to be called when a turn is ended.
      */
     void endTurn() {
-        for (Effect effect : effects) {
+        List<Effect> tempEffects = new ArrayList<>(effects);
+        for (Effect effect : tempEffects) {
             effect.endTurn(this);
         }
         //setHealth(getBaseHealth());

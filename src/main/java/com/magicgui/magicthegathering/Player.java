@@ -220,6 +220,3 @@ public class Player {
     private enum drawType {CANT_AFFORD, SPELL, PLACE}
 
 }
-
-
-
