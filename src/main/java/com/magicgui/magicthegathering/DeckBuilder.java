@@ -20,7 +20,9 @@ public class DeckBuilder {
     }
 
     static Card generateSpellCard() {
-        return generateCreatureCard();
+        List<Effect> effects = new ArrayList<Effect>();
+        effects.add(new AcidEffect(3));
+        return new Card(0,0,3,effects,"Spell Card","",true);
     }
 
     static Card generateCreatureCard() {
@@ -33,7 +35,6 @@ public class DeckBuilder {
         int health = generator.nextInt(1, 5 - attack);
         int cost = (attack + health) / 2;
 
-        Effect effect = generateRandomEffect();
         List<Effect> effects = new ArrayList<>();
 
 
